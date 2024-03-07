@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools", "requests>=2.31.0"]
+
+[project]
+name = "wykop_sdk_reloaded"
+version = "0.3.3"
+authors = [
+  { name="Łukasz Klim", email="lukasz.klim92@gmail.com" },
+]
+description = "Wykop SDK for APIv3 and above."
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/lukas346/wykop_sdk_reloaded"
+Issues = "https://github.com/lukas346/wykop_sdk_reloaded/issues"
