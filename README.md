@@ -1,5 +1,7 @@
 # Wykop SDK Reloaded
 
+[![PyPI version](https://badge.fury.io/py/wykop-sdk-reloaded.svg)](https://badge.fury.io/py/wykop-sdk-reloaded)
+
 ![](https://wykop.pl/cdn/c3201142/comment_ngdZRBR0tJ8YW99kIj66o0KiHeFrapCO.jpg)
 
 SDK umozliwijące komunikację z API (v3) wykopu na podstawie [oficjalnej dokumentacji](https://doc.wykop.pl/#/).
