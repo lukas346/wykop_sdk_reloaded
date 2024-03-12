@@ -57,4 +57,4 @@ class AuthClient:
         """
         Wybiera bardziej sprawczy token
         """
-        return self.jwt_user_token if self.jwt_user_token else self.jwt_app_token
+        return self.jwt_user_token or self.jwt_app_token
