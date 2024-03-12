@@ -45,7 +45,15 @@ ENTRY_COMMENTS_COMMENT_URL = lambda entry_id, comment_id: f"{API_URL}/entries/{e
 ENTRY_COMMENTS_VOTES_URL = lambda entry_id, comment_id: f"{API_URL}/entries/{entry_id}/comments/{comment_id}/votes"
 
 # notifications
-NOTIFICATIONS_ENTRIES_URL = f"{API_URL}/entries"
+NOTIFICATIONS_STATUS_URL = f"{API_URL}/notifications/status"
+
+NOTIFICATIONS_ENTRIES_URL = f"{API_URL}/notifications/entries"
+NOTIFICATIONS_ENTRIES_ALL_URL = f"{API_URL}/notifications/entries/all"
+NOTIFICATIONS_ENTRY_URL = lambda id: f"{API_URL}/notifications/entries/{id}"
+
+NOTIFICATIONS_PMS_URL = f"{API_URL}/notifications/pm"
+NOTIFICATIONS_PMS_ALL_URL = f"{API_URL}/notifications/pm/all"
+NOTIFICATIONS_PM_URL = lambda id: f"{API_URL}/notifications/pm/{id}"
 
 # media - photos
 MEDIA_PHOTOS_UPLOAD_URL = f"{API_URL}/media/photos"

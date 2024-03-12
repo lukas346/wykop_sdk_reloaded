@@ -39,13 +39,17 @@ class ApiRequester:
         return response.json() if response.text else None
     
 
-    def put(self, data: dict) -> dict:
-        response = requests.put(self.url, json={"data": data}, headers=self.header)
+    def put(self, data: dict | None = None) -> dict:
+        response = requests.put(
+            self.url,
+            json={"data": data} if data else None,
+            headers=self.header
+        )
 
         if response.status_code >= 300:
             raise WykopApiError(response.json()["error"])
         
-        return response.json()
+        return response.json() if response.text else None
     
     def delete(self):
         response = requests.delete(self.url, headers=self.header)

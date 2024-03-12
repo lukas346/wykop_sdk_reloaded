@@ -838,6 +838,18 @@ class _WykopApiClientEntryCommentsMixin(_WykopApiClientBase):
 
 class _WykopApiClientNotificationsMixin(_WykopApiClientBase):
     @auth_user_required
+    def notifinations_status(self) -> dict:
+        """
+        Wymaga zalogowania uzytkownika.
+
+        Sprawdzenie czy zalogowany użytkownik posiada nowe powiadomienia
+        """
+        return ApiRequester(
+            url=_urls.NOTIFICATIONS_STATUS_URL,
+            token=self.auth.get_jwt_token()
+        ).get()
+
+    @auth_user_required
     def notifinations_entries_list(self) -> dict:
         """
         Wymaga zalogowania uzytkownika.
@@ -848,6 +860,138 @@ class _WykopApiClientNotificationsMixin(_WykopApiClientBase):
             url=_urls.NOTIFICATIONS_ENTRIES_URL,
             token=self.auth.get_jwt_token()
         ).get()
+
+    @auth_user_required
+    def notifinations_entries_mark_all_readed(self):
+        """
+        Wymaga zalogowania uzytkownika.
+
+        Oznaczenie powiadomień użytkownika jako przeczytane
+        """
+        return ApiRequester(
+            url=_urls.NOTIFICATIONS_ENTRIES_ALL_URL,
+            token=self.auth.get_jwt_token()
+        ).put()
+    
+    @auth_user_required
+    def notifinations_entries_delete_all(self):
+        """
+        Wymaga zalogowania uzytkownika.
+
+        Usunięcie wszystkich powiadomień użytkownika
+        """
+        return ApiRequester(
+            url=_urls.NOTIFICATIONS_ENTRIES_ALL_URL,
+            token=self.auth.get_jwt_token()
+        ).delete()
+
+    @auth_user_required
+    def notifinations_get_entry(self, entry_id: str) -> dict:
+        """
+        Wymaga zalogowania uzytkownika.
+
+        Pobranie jednej notyfikacji dla zalogowanego użytkownika
+        """
+        return ApiRequester(
+            url=_urls.NOTIFICATIONS_ENTRY_URL(entry_id),
+            token=self.auth.get_jwt_token()
+        ).get()
+
+    @auth_user_required
+    def notifinations_entry_mark_readed(self, entry_id: str):
+        """
+        Wymaga zalogowania uzytkownika.
+
+        Ustawienie powiadomienia jako przeczytane
+        """
+        return ApiRequester(
+            url=_urls.NOTIFICATIONS_ENTRY_URL(entry_id),
+            token=self.auth.get_jwt_token()
+        ).put()
+
+    @auth_user_required
+    def notifinations_entry_delete(self, entry_id: str):
+        """
+        Wymaga zalogowania uzytkownika.
+
+        Usunięcie powiadomienia
+        """
+        return ApiRequester(
+            url=_urls.NOTIFICATIONS_ENTRY_URL(entry_id),
+            token=self.auth.get_jwt_token()
+        ).delete()
+    
+    @auth_user_required
+    def notifinations_pms_list(self) -> dict:
+        """
+        Wymaga zalogowania uzytkownika.
+
+        Pobranie listy notyfikacji o prywatnych wiadomościach użytkownika
+        """
+        return ApiRequester(
+            url=_urls.NOTIFICATIONS_PMS_URL,
+            token=self.auth.get_jwt_token()
+        ).get()
+
+    @auth_user_required
+    def notifinations_pms_mark_all_readed(self):
+        """
+        Wymaga zalogowania uzytkownika.
+
+        Ustawienie wszystkich powiadomień z prywatnych wiadomości jako przeczytane
+        """
+        return ApiRequester(
+            url=_urls.NOTIFICATIONS_PMS_ALL_URL,
+            token=self.auth.get_jwt_token()
+        ).put()
+    
+    @auth_user_required
+    def notifinations_pms_delete_all(self):
+        """
+        Wymaga zalogowania uzytkownika.
+
+        Usunięcie wszystkich powiadomień z prywatnych wiadomości
+        """
+        return ApiRequester(
+            url=_urls.NOTIFICATIONS_PMS_ALL_URL,
+            token=self.auth.get_jwt_token()
+        ).delete()
+
+    @auth_user_required
+    def notifinations_get_pm(self, pm_id: str) -> dict:
+        """
+        Wymaga zalogowania uzytkownika.
+
+        Pobranie pw dla zalogowanego użytkownika
+        """
+        return ApiRequester(
+            url=_urls.NOTIFICATIONS_PM_URL(pm_id),
+            token=self.auth.get_jwt_token()
+        ).get()
+
+    @auth_user_required
+    def notifinations_pm_mark_readed(self, pm_id: str):
+        """
+        Wymaga zalogowania uzytkownika.
+
+        Ustawienie pw jako przeczytanej
+        """
+        return ApiRequester(
+            url=_urls.NOTIFICATIONS_PM_URL(pm_id),
+            token=self.auth.get_jwt_token()
+        ).put()
+
+    @auth_user_required
+    def notifinations_pm_delete(self, pm_id: str):
+        """
+        Wymaga zalogowania uzytkownika.
+
+        Usunięcie pw
+        """
+        return ApiRequester(
+            url=_urls.NOTIFICATIONS_PM_URL(pm_id),
+            token=self.auth.get_jwt_token()
+        ).delete()
 
 
 class _WykopApiClientMediaPhotosMixin(_WykopApiClientBase):

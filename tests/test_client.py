@@ -1,3 +1,4 @@
+from pprint import pprint as print
 from unittest import TestCase
 import os
 
@@ -113,6 +114,15 @@ class TestWykopApiV3Client(TestCase):
         
     def test_notifications(self):
         self.api.notifinations_entries_list()
+        self.api.notifinations_status()
+        # self.api.notifinations_mark_all_readed()
+        # self.api.notifinations_delete_all()
+
+        response = self.api.notifinations_pms_list()
+        # pm_id = response["data"][0]["id"]
+        # self.api.notifinations_pm_mark_readed(pm_id)
+        # self.api.notifinations_get_pm(pm_id)
+        # self.api.notifinations_pm_delete(pm_id)
 
     def test_media_photos(self):
         response = self.api.photos_upload_url(

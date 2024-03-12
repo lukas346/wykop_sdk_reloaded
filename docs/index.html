@@ -217,7 +217,7 @@ params&nbsp;tags:&nbsp;Tagi.&nbsp;Można&nbsp;wysłać&nbsp;do&nbsp;6&nbsp;tagó
 Methods inherited from <a href="src.wykop_sdk_reloaded.v3.client.html#_WykopApiClientArticleMixin">_WykopApiClientArticleMixin</a>:<br>
 <dl><dt><a name="WykopApiClient-articles_get_article"><strong>articles_get_article</strong></a>(self, article_id: str) -&gt; dict</dt><dd><span class="code">Pobranie&nbsp;informacji&nbsp;o&nbsp;artykule</span></dd></dl>
 
-<dl><dt><a name="WykopApiClient-articles_list_by_tag"><strong>articles_list_by_tag</strong></a>(self, tag: str, page: str | None = None, limit: int | None = None, year: int | None = None, month: int | None = None) -&gt; dict</dt><dd><span class="code">Zwraca&nbsp;pełną&nbsp;liste&nbsp;artykułów&nbsp;konkretnego&nbsp;tagu&nbsp;<br>
+<dl><dt><a name="WykopApiClient-articles_list_by_tag"><strong>articles_list_by_tag</strong></a>(self, tag: str, sort: src.wykop_sdk_reloaded.v3.types.StreamSortType = &lt;StreamSortType.ALL: 'all'&gt;, page: str | None = None, limit: int | None = None, year: int | None = None, month: int | None = None) -&gt; dict</dt><dd><span class="code">Zwraca&nbsp;pełną&nbsp;liste&nbsp;artykułów&nbsp;konkretnego&nbsp;tagu&nbsp;<br>
 UWAGA:&nbsp;Parametr&nbsp;page&nbsp;przyjmuje&nbsp;dla&nbsp;użytkowników&nbsp;niezalogowanych&nbsp;int&nbsp;z&nbsp;numerem&nbsp;strony,&nbsp;a&nbsp;dla&nbsp;zalogowanych&nbsp;hash&nbsp;strony.&nbsp;<br>
 UWAGA2:&nbsp;Standardowa&nbsp;paginacja&nbsp;jest&nbsp;dostępna&nbsp;tylko&nbsp;dla&nbsp;użytkowników&nbsp;niezalogowanych.&nbsp;<br>
 Paginacja&nbsp;dla&nbsp;użytkowników&nbsp;zalogowanych&nbsp;będzie&nbsp;zwracać&nbsp;hash&nbsp;next&nbsp;dla&nbsp;następnej&nbsp;strony&nbsp;i&nbsp;prev&nbsp;dla&nbsp;poprzedniej.</span></dd></dl>
@@ -236,7 +236,7 @@ Właściciel&nbsp;tagu&nbsp;może&nbsp;modyfikować&nbsp;tło&nbsp;(base64&nbsp;
 
 <dl><dt><a name="WykopApiClient-tags_get_related_tag"><strong>tags_get_related_tag</strong></a>(self, tag: str) -&gt; dict</dt><dd><span class="code">Kolekcja&nbsp;powiązanych&nbsp;tagów&nbsp;(max&nbsp;do&nbsp;10&nbsp;wyników)</span></dd></dl>
 
-<dl><dt><a name="WykopApiClient-tags_get_stream_of_tag"><strong>tags_get_stream_of_tag</strong></a>(self, tag: str, page: str | None = None, limit: int | None = None, year: int | None = None, month: int | None = None) -&gt; dict</dt><dd><span class="code">Zwraca&nbsp;pełną&nbsp;liste&nbsp;wpisów&nbsp;i&nbsp;znalezisk&nbsp;z&nbsp;konkretnego&nbsp;tagu&nbsp;UWAGA:&nbsp;<br>
+<dl><dt><a name="WykopApiClient-tags_get_stream_of_tag"><strong>tags_get_stream_of_tag</strong></a>(self, tag: str, sort: src.wykop_sdk_reloaded.v3.types.StreamSortType = &lt;StreamSortType.ALL: 'all'&gt;, page: str | None = None, limit: int | None = None, year: int | None = None, month: int | None = None) -&gt; dict</dt><dd><span class="code">Zwraca&nbsp;pełną&nbsp;liste&nbsp;wpisów&nbsp;i&nbsp;znalezisk&nbsp;z&nbsp;konkretnego&nbsp;tagu&nbsp;UWAGA:&nbsp;<br>
 Parametr&nbsp;page&nbsp;przyjmuje&nbsp;dla&nbsp;użytkowników&nbsp;niezalogowanych&nbsp;int&nbsp;z&nbsp;numerem&nbsp;strony,&nbsp;a&nbsp;dla&nbsp;zalogowanych&nbsp;hash&nbsp;strony.&nbsp;<br>
 UWAGA2:&nbsp;Standardowa&nbsp;paginacja&nbsp;jest&nbsp;dostępna&nbsp;tylko&nbsp;dla&nbsp;użytkowników&nbsp;niezalogowanych.&nbsp;<br>
 Paginacja&nbsp;dla&nbsp;użytkowników&nbsp;zalogowanych&nbsp;będzie&nbsp;zwracać&nbsp;hash&nbsp;next&nbsp;dla&nbsp;następnej&nbsp;strony&nbsp;i&nbsp;prev&nbsp;dla&nbsp;poprzedniej.</span></dd></dl>
@@ -260,7 +260,7 @@ UWAGA:&nbsp;Parametr&nbsp;page&nbsp;przyjmuje&nbsp;dla&nbsp;użytkowników&nbsp;
 UWAGA2:&nbsp;Standardowa&nbsp;paginacja&nbsp;jest&nbsp;dostępna&nbsp;tylko&nbsp;dla&nbsp;użytkowników&nbsp;niezalogowanych.&nbsp;<br>
 Paginacja&nbsp;dla&nbsp;użytkowników&nbsp;zalogowanych&nbsp;będzie&nbsp;zwracać&nbsp;hash&nbsp;next&nbsp;dla&nbsp;następnej&nbsp;strony&nbsp;i&nbsp;prev&nbsp;dla&nbsp;poprzedniej.</span></dd></dl>
 
-<dl><dt><a name="WykopApiClient-entries_list_by_tag"><strong>entries_list_by_tag</strong></a>(self, tag: str, page: str | None = None, limit: int | None = None, year: int | None = None, month: int | None = None) -&gt; dict</dt><dd><span class="code">Zwraca&nbsp;pełną&nbsp;liste&nbsp;wpisów&nbsp;konkretnego&nbsp;tagu&nbsp;<br>
+<dl><dt><a name="WykopApiClient-entries_list_by_tag"><strong>entries_list_by_tag</strong></a>(self, tag: str, sort: src.wykop_sdk_reloaded.v3.types.StreamSortType = &lt;StreamSortType.ALL: 'all'&gt;, page: str | None = None, limit: int | None = None, year: int | None = None, month: int | None = None) -&gt; dict</dt><dd><span class="code">Zwraca&nbsp;pełną&nbsp;liste&nbsp;wpisów&nbsp;konkretnego&nbsp;tagu&nbsp;<br>
 UWAGA:&nbsp;Parametr&nbsp;page&nbsp;przyjmuje&nbsp;dla&nbsp;użytkowników&nbsp;niezalogowanych&nbsp;int&nbsp;z&nbsp;numerem&nbsp;strony,&nbsp;a&nbsp;dla&nbsp;zalogowanych&nbsp;hash&nbsp;strony.&nbsp;<br>
 UWAGA2:&nbsp;Standardowa&nbsp;paginacja&nbsp;jest&nbsp;dostępna&nbsp;tylko&nbsp;dla&nbsp;użytkowników&nbsp;niezalogowanych.&nbsp;<br>
 Paginacja&nbsp;dla&nbsp;użytkowników&nbsp;zalogowanych&nbsp;będzie&nbsp;zwracać&nbsp;hash&nbsp;next&nbsp;dla&nbsp;następnej&nbsp;strony&nbsp;i&nbsp;prev&nbsp;dla&nbsp;poprzedniej.</span></dd></dl>
@@ -303,9 +303,57 @@ Głosowanie&nbsp;na&nbsp;komentarz&nbsp;do&nbsp;wpisu&nbsp;z&nbsp;mikrobloga</sp
 
 <hr>
 Methods inherited from <a href="src.wykop_sdk_reloaded.v3.client.html#_WykopApiClientNotificationsMixin">_WykopApiClientNotificationsMixin</a>:<br>
+<dl><dt><a name="WykopApiClient-notifinations_entries_delete_all"><strong>notifinations_entries_delete_all</strong></a>(self)</dt><dd><span class="code">Wymaga&nbsp;zalogowania&nbsp;uzytkownika.<br>
+&nbsp;<br>
+Usunięcie&nbsp;wszystkich&nbsp;powiadomień&nbsp;użytkownika</span></dd></dl>
+
 <dl><dt><a name="WykopApiClient-notifinations_entries_list"><strong>notifinations_entries_list</strong></a>(self) -&gt; dict</dt><dd><span class="code">Wymaga&nbsp;zalogowania&nbsp;uzytkownika.<br>
 &nbsp;<br>
 Pobranie&nbsp;notyfikacji</span></dd></dl>
+
+<dl><dt><a name="WykopApiClient-notifinations_entries_mark_all_readed"><strong>notifinations_entries_mark_all_readed</strong></a>(self)</dt><dd><span class="code">Wymaga&nbsp;zalogowania&nbsp;uzytkownika.<br>
+&nbsp;<br>
+Oznaczenie&nbsp;powiadomień&nbsp;użytkownika&nbsp;jako&nbsp;przeczytane</span></dd></dl>
+
+<dl><dt><a name="WykopApiClient-notifinations_entry_delete"><strong>notifinations_entry_delete</strong></a>(self, entry_id: str)</dt><dd><span class="code">Wymaga&nbsp;zalogowania&nbsp;uzytkownika.<br>
+&nbsp;<br>
+Usunięcie&nbsp;powiadomienia</span></dd></dl>
+
+<dl><dt><a name="WykopApiClient-notifinations_entry_mark_readed"><strong>notifinations_entry_mark_readed</strong></a>(self, entry_id: str)</dt><dd><span class="code">Wymaga&nbsp;zalogowania&nbsp;uzytkownika.<br>
+&nbsp;<br>
+Ustawienie&nbsp;powiadomienia&nbsp;jako&nbsp;przeczytane</span></dd></dl>
+
+<dl><dt><a name="WykopApiClient-notifinations_get_entry"><strong>notifinations_get_entry</strong></a>(self, entry_id: str) -&gt; dict</dt><dd><span class="code">Wymaga&nbsp;zalogowania&nbsp;uzytkownika.<br>
+&nbsp;<br>
+Pobranie&nbsp;jednej&nbsp;notyfikacji&nbsp;dla&nbsp;zalogowanego&nbsp;użytkownika</span></dd></dl>
+
+<dl><dt><a name="WykopApiClient-notifinations_get_pm"><strong>notifinations_get_pm</strong></a>(self, pm_id: str) -&gt; dict</dt><dd><span class="code">Wymaga&nbsp;zalogowania&nbsp;uzytkownika.<br>
+&nbsp;<br>
+Pobranie&nbsp;pw&nbsp;dla&nbsp;zalogowanego&nbsp;użytkownika</span></dd></dl>
+
+<dl><dt><a name="WykopApiClient-notifinations_pm_delete"><strong>notifinations_pm_delete</strong></a>(self, pm_id: str)</dt><dd><span class="code">Wymaga&nbsp;zalogowania&nbsp;uzytkownika.<br>
+&nbsp;<br>
+Usunięcie&nbsp;pw</span></dd></dl>
+
+<dl><dt><a name="WykopApiClient-notifinations_pm_mark_readed"><strong>notifinations_pm_mark_readed</strong></a>(self, pm_id: str)</dt><dd><span class="code">Wymaga&nbsp;zalogowania&nbsp;uzytkownika.<br>
+&nbsp;<br>
+Ustawienie&nbsp;pw&nbsp;jako&nbsp;przeczytanej</span></dd></dl>
+
+<dl><dt><a name="WykopApiClient-notifinations_pms_delete_all"><strong>notifinations_pms_delete_all</strong></a>(self)</dt><dd><span class="code">Wymaga&nbsp;zalogowania&nbsp;uzytkownika.<br>
+&nbsp;<br>
+Usunięcie&nbsp;wszystkich&nbsp;powiadomień&nbsp;z&nbsp;prywatnych&nbsp;wiadomości</span></dd></dl>
+
+<dl><dt><a name="WykopApiClient-notifinations_pms_list"><strong>notifinations_pms_list</strong></a>(self) -&gt; dict</dt><dd><span class="code">Wymaga&nbsp;zalogowania&nbsp;uzytkownika.<br>
+&nbsp;<br>
+Pobranie&nbsp;listy&nbsp;notyfikacji&nbsp;o&nbsp;prywatnych&nbsp;wiadomościach&nbsp;użytkownika</span></dd></dl>
+
+<dl><dt><a name="WykopApiClient-notifinations_pms_mark_all_readed"><strong>notifinations_pms_mark_all_readed</strong></a>(self)</dt><dd><span class="code">Wymaga&nbsp;zalogowania&nbsp;uzytkownika.<br>
+&nbsp;<br>
+Ustawienie&nbsp;wszystkich&nbsp;powiadomień&nbsp;z&nbsp;prywatnych&nbsp;wiadomości&nbsp;jako&nbsp;przeczytane</span></dd></dl>
+
+<dl><dt><a name="WykopApiClient-notifinations_status"><strong>notifinations_status</strong></a>(self) -&gt; dict</dt><dd><span class="code">Wymaga&nbsp;zalogowania&nbsp;uzytkownika.<br>
+&nbsp;<br>
+Sprawdzenie&nbsp;czy&nbsp;zalogowany&nbsp;użytkownik&nbsp;posiada&nbsp;nowe&nbsp;powiadomienia</span></dd></dl>
 
 <hr>
 Methods inherited from <a href="src.wykop_sdk_reloaded.v3.client.html#_WykopApiClientMediaPhotosMixin">_WykopApiClientMediaPhotosMixin</a>:<br>
@@ -334,7 +382,7 @@ Methods inherited from <a href="src.wykop_sdk_reloaded.v3.client.html#_WykopApiC
 Methods inherited from <a href="src.wykop_sdk_reloaded.v3.client.html#_WykopApiClientBase">_WykopApiClientBase</a>:<br>
 <dl><dt><a name="WykopApiClient-__init__"><strong>__init__</strong></a>(self, auth: src.wykop_sdk_reloaded.v3._auth.AuthClient)</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
 
-<dl><dt><a name="WykopApiClient-raw_request"><strong>raw_request</strong></a>(self, url: str, type: src.wykop_sdk_reloaded.v3.types.RequestType, data: dict | None = None)</dt><dd><span class="code">Umozliwia&nbsp;bezposrednie&nbsp;odpytanie&nbsp;Wykop&nbsp;API</span></dd></dl>
+<dl><dt><a name="WykopApiClient-raw_request"><strong>raw_request</strong></a>(self, url: str, type: src.wykop_sdk_reloaded.v3.types.RequestType, data: dict | None = None, params: dict | None = None) -&gt; dict | None</dt><dd><span class="code">Umozliwia&nbsp;bezposrednie&nbsp;odpytanie&nbsp;Wykop&nbsp;API</span></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="src.wykop_sdk_reloaded.v3.client.html#_WykopApiClientBase">_WykopApiClientBase</a>:<br>
