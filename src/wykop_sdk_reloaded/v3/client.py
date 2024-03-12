@@ -45,7 +45,7 @@ class _WykopApiClientBase:
 
 
 class _WykopApiClientLinksMixin(_WykopApiClientBase):
-    def links_list(
+    def links_list_links(
             self,
             type: LinkType,
             page: str | None = None,
@@ -81,7 +81,7 @@ class _WykopApiClientLinksMixin(_WykopApiClientBase):
         ).get()
     
     @auth_user_required
-    def links_remove_link(
+    def links_delete_link(
             self,
             link_id: str
         ):
@@ -96,7 +96,7 @@ class _WykopApiClientLinksMixin(_WykopApiClientBase):
         ).delete()
     
     @auth_user_required
-    def link_update_link(
+    def links_update_link(
         self,
         link_id: str,
         title: str,
@@ -176,7 +176,7 @@ class _WykopApiClientLinksMixin(_WykopApiClientBase):
 
 
 class _WykopApiClientLinkCommentsMixin(_WykopApiClientBase):
-    def link_comments_list(
+    def link_comments_list_comments(
         self,
         link_id: str,
         sort: LinkCommentSortType = LinkCommentSortType.NEWEST,
@@ -324,7 +324,7 @@ class _WykopApiClientLinkCommentsMixin(_WykopApiClientBase):
 
 class _WykopApiClientLinkDraftMixin(_WykopApiClientBase):
     @auth_user_required
-    def links_draft_list(self):
+    def links_draft_list_drafts(self):
         """
         Wymaga zalogowania uzytkownika.
 
@@ -337,7 +337,7 @@ class _WykopApiClientLinkDraftMixin(_WykopApiClientBase):
         ).get()
     
     @auth_user_required
-    def links_draft_create_step_one(self, url: str):
+    def links_draft_create_draft_step_one(self, url: str):
         """
         Wymaga zalogowania uzytkownika.
 
@@ -349,7 +349,7 @@ class _WykopApiClientLinkDraftMixin(_WykopApiClientBase):
         ).post({"url": url})
     
     @auth_user_required
-    def links_draft_create_step_two(
+    def links_draft_create_draft_step_two(
         self,
         key: str,
         title: str,
@@ -423,7 +423,7 @@ class _WykopApiClientLinkDraftMixin(_WykopApiClientBase):
         ).get()
 
     @auth_user_required
-    def links_draft_remove_draft(self, key: str):
+    def links_draft_delete_draft(self, key: str):
         """
         Wymaga zalogowania uzytkownika.
 
@@ -436,7 +436,7 @@ class _WykopApiClientLinkDraftMixin(_WykopApiClientBase):
 
 
 class _WykopApiClientTagsMixin(_WykopApiClientBase):
-    def tags_get_popular(self) -> dict:
+    def tags_get_popular_tags(self) -> dict:
         """
         Zwraca listę popularnych tagów.
         """
@@ -527,7 +527,7 @@ class _WykopApiClientTagsMixin(_WykopApiClientBase):
 
 
 class _WykopApiClientArticleMixin(_WykopApiClientBase):
-    def articles_list_by_tag(
+    def articles_list_articles_by_tag(
             self,
             tag: str,
             sort: StreamSortType = StreamSortType.ALL,
@@ -569,7 +569,7 @@ class _WykopApiClientArticleMixin(_WykopApiClientBase):
 
 class _WykopApiClientEntriesMixin(_WykopApiClientBase):
     @auth_user_required
-    def entries_create(
+    def entries_create_entry(
             self,
             content: str | None = None,
             photo: str | None = None,
@@ -592,7 +592,7 @@ class _WykopApiClientEntriesMixin(_WykopApiClientBase):
             "adult": adult
         })
     
-    def entries_list(
+    def entries_list_entries(
         self,
         sort: EntriesSortType = EntriesSortType.HOT,
         last_update: EntriesLastUpdateType = EntriesLastUpdateType.TWELVE,
@@ -615,7 +615,7 @@ class _WykopApiClientEntriesMixin(_WykopApiClientBase):
             "limit": limit
         })
     
-    def entries_list_by_tag(
+    def entries_list_entries_by_tag(
             self,
             tag: str,
             sort: StreamSortType = StreamSortType.ALL,
@@ -725,7 +725,7 @@ class _WykopApiClientEntriesMixin(_WykopApiClientBase):
 
 
 class _WykopApiClientEntryCommentsMixin(_WykopApiClientBase):
-    def entry_comments_list(
+    def entry_comments_list_comments(
         self,
         entry_id: str,
         page: str | None = None,
@@ -856,7 +856,7 @@ class _WykopApiClientNotificationsMixin(_WykopApiClientBase):
         ).get()
 
     @auth_user_required
-    def notifinations_entries_list(self) -> dict:
+    def notifinations_list_entries(self) -> dict:
         """
         Wymaga zalogowania uzytkownika.
 
@@ -868,7 +868,7 @@ class _WykopApiClientNotificationsMixin(_WykopApiClientBase):
         ).get()
 
     @auth_user_required
-    def notifinations_entries_mark_all_readed(self):
+    def notifinations_mark_all_entries_readed(self):
         """
         Wymaga zalogowania uzytkownika.
 
@@ -880,7 +880,7 @@ class _WykopApiClientNotificationsMixin(_WykopApiClientBase):
         ).put()
     
     @auth_user_required
-    def notifinations_entries_delete_all(self):
+    def notifinations_delete_all_entries(self):
         """
         Wymaga zalogowania uzytkownika.
 
@@ -904,7 +904,7 @@ class _WykopApiClientNotificationsMixin(_WykopApiClientBase):
         ).get()
 
     @auth_user_required
-    def notifinations_entry_mark_readed(self, entry_id: str):
+    def notifinations_mark_entry_readed(self, entry_id: str):
         """
         Wymaga zalogowania uzytkownika.
 
@@ -916,7 +916,7 @@ class _WykopApiClientNotificationsMixin(_WykopApiClientBase):
         ).put()
 
     @auth_user_required
-    def notifinations_entry_delete(self, entry_id: str):
+    def notifinations_delete_entry(self, entry_id: str):
         """
         Wymaga zalogowania uzytkownika.
 
@@ -928,7 +928,7 @@ class _WykopApiClientNotificationsMixin(_WykopApiClientBase):
         ).delete()
     
     @auth_user_required
-    def notifinations_pms_list(self) -> dict:
+    def notifinations_list_pms(self) -> dict:
         """
         Wymaga zalogowania uzytkownika.
 
@@ -940,7 +940,7 @@ class _WykopApiClientNotificationsMixin(_WykopApiClientBase):
         ).get()
 
     @auth_user_required
-    def notifinations_pms_mark_all_readed(self):
+    def notifinations_mark_all_pms_readed(self):
         """
         Wymaga zalogowania uzytkownika.
 
@@ -952,7 +952,7 @@ class _WykopApiClientNotificationsMixin(_WykopApiClientBase):
         ).put()
     
     @auth_user_required
-    def notifinations_pms_delete_all(self):
+    def notifinations_delete_all_pms(self):
         """
         Wymaga zalogowania uzytkownika.
 
@@ -976,7 +976,7 @@ class _WykopApiClientNotificationsMixin(_WykopApiClientBase):
         ).get()
 
     @auth_user_required
-    def notifinations_pm_mark_readed(self, pm_id: str):
+    def notifinations_mark_pm_readed(self, pm_id: str):
         """
         Wymaga zalogowania uzytkownika.
 
@@ -988,7 +988,7 @@ class _WykopApiClientNotificationsMixin(_WykopApiClientBase):
         ).put()
 
     @auth_user_required
-    def notifinations_pm_delete(self, pm_id: str):
+    def notifinations_delete_pm(self, pm_id: str):
         """
         Wymaga zalogowania uzytkownika.
 

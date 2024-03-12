@@ -21,17 +21,17 @@ class TestReadOnlyWykopApiV3Client(TestCase):
         tag = "wykop"
         
         self.api.tags_get_detail_of_tag(tag)
-        self.api.tags_get_popular()
+        self.api.tags_get_popular_tags()
         self.api.tags_get_popular_user_tags()
         self.api.tags_get_related_tag(tag)
         self.api.tags_get_stream_of_tag(tag)
         self.api.tags_get_tag_owners(tag)
-        self.api.entries_list()
+        self.api.entries_list_entries()
 
     def test_not_permitted(self):
         with self.assertRaises(AuthError):
-            self.api.notifinations_entries_list()
-            self.api.entries_create("lorem " * 40)
+            self.api.notifinations_list_entries()
+            self.api.entries_create_entry("lorem " * 40)
 
     
     def test_raw_request(self):
@@ -56,40 +56,40 @@ class TestWykopApiV3Client(TestCase):
         tag = "wykop"
 
         self.api.tags_get_detail_of_tag(tag)
-        self.api.tags_get_popular()
+        self.api.tags_get_popular_tags()
         self.api.tags_get_popular_user_tags()
         self.api.tags_get_related_tag(tag)
         self.api.tags_get_stream_of_tag(tag)
         self.api.tags_get_tag_owners(tag)
 
     def test_entries(self):
-        response = self.api.entries_create("lorem " * 40)
+        response = self.api.entries_create_entry("lorem " * 40)
         entry_id = str(response["data"]["id"])
 
         self.api.entries_get_entry(entry_id)
         self.api.entries_update_entry(entry_id, 'ipsum'* 20)
 
-        self.api.entry_comments_list(entry_id)
+        self.api.entry_comments_list_comments(entry_id)
 
         response = self.api.entry_comments_create_comment(entry_id, "ipsum lorem" * 5)
         entry_comment_id = str(response["data"]["id"])
         
-        self.api.entry_comments_list(entry_id)
+        self.api.entry_comments_list_comments(entry_id)
         self.api.entry_comments_update_comment(entry_id, entry_comment_id, "test " * 5)
         self.api.entry_comments_delete_comment(entry_id, entry_comment_id)
 
         self.api.entries_delete_entry(entry_id)
 
     def test_entries_voting(self):
-        self.api.entries_list(sort=EntriesSortType.NEWEST)
-        response = self.api.entries_list_by_tag("wykop")
+        self.api.entries_list_entries(sort=EntriesSortType.NEWEST)
+        response = self.api.entries_list_entries_by_tag("wykop")
         entry_id = response["data"][0]["id"]
 
         self.api.entries_vote_up_entry(entry_id)
         self.api.entries_vote_revoke_entry(entry_id)
 
     def test_links(self):
-        response = self.api.links_list(LinkType.HOMEPAGE)
+        response = self.api.links_list_links(LinkType.HOMEPAGE)
         link_id = response["data"][0]["id"]
 
         self.api.links_vote_down_link(link_id, LinkVoteDownReason.INAPPROPRIATE)
@@ -97,7 +97,7 @@ class TestWykopApiV3Client(TestCase):
         self.api.links_vote_up_link(link_id)
         self.api.links_vote_revoke_link(link_id)
 
-        response = self.api.link_comments_list(link_id)
+        response = self.api.link_comments_list_comments(link_id)
         comment_id = response["data"][0]["id"]
         self.api.link_comments_vote_comment(link_id, comment_id, LinkCommentVoteType.UP)
         self.api.link_comments_vote_revoke_comment(link_id, comment_id)
@@ -113,12 +113,12 @@ class TestWykopApiV3Client(TestCase):
         self.api.link_comments_delete_comment(link_id, own_comment_to_comment_id)
         
     def test_notifications(self):
-        self.api.notifinations_entries_list()
+        self.api.notifinations_list_entries()
         self.api.notifinations_status()
         # self.api.notifinations_mark_all_readed()
         # self.api.notifinations_delete_all()
 
-        response = self.api.notifinations_pms_list()
+        response = self.api.notifinations_list_pms()
         # pm_id = response["data"][0]["id"]
         # self.api.notifinations_pm_mark_readed(pm_id)
         # self.api.notifinations_get_pm(pm_id)
@@ -140,22 +140,22 @@ class TestWykopApiV3Client(TestCase):
         assert response["data"]["key"]
 
     def test_link_draft(self):
-        self.api.links_draft_list()
+        self.api.links_draft_list_drafts()
 
-        response = self.api.links_draft_create_step_one(
+        response = self.api.links_draft_create_draft_step_one(
             url="https://youtu.be/dvgZkm1xWPE?si=4lRM8tevSl9tvClT"
         )
         key = response["data"]["key"]
 
         self.api.links_draft_get_draft(key)
-        self.api.links_draft_remove_draft(key)
+        self.api.links_draft_delete_draft(key)
         
         
-        response = self.api.links_draft_create_step_one(
+        response = self.api.links_draft_create_draft_step_one(
             url="https://youtu.be/dvgZkm1xWPE?si=4lRM8tevSl9tvClT"
         )
         key = response["data"]["key"]
-        self.api.links_draft_create_step_two(
+        self.api.links_draft_create_draft_step_two(
             key=key,
             title="Coldplay Viva La Vida 4",
             description="lorem " * 10,
@@ -164,4 +164,4 @@ class TestWykopApiV3Client(TestCase):
         )
         response = self.api.profiles_get_profile_links_added(env("WYKOP_USERNAME"))
         link_id = response["data"][0]["id"]
-        self.api.links_remove_link(link_id)
+        self.api.links_delete_link(link_id)
