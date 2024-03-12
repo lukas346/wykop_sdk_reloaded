@@ -28,13 +28,19 @@ class _WykopApiClientBase:
             case RequestType.GET:
                 if data:
                     raise WykopApiClient("Metoda GET nie obsługuje wysyłania danych, moze chodzilo ci o parametr params?")
-
+                
                 return ApiRequester(url=url, token=self.auth.get_jwt_token()).get(params=params)
             case RequestType.POST:
                 return ApiRequester(url=url, token=self.auth.get_jwt_token()).post(data=data, params=params)
             case RequestType.PUT:
+                if params:
+                    raise WykopApiClient("Metoda PUT nie obsługuje wysyłania parametrów, moze chodzilo ci o parametr data?")
+
                 return ApiRequester(url=url, token=self.auth.get_jwt_token()).put(data=data)
             case RequestType.DELETE:
+                if params or data:
+                    raise WykopApiClient("Metoda DELETE nie obsługuje wysyłania parametrów i danych.")
+                
                 return ApiRequester(url=url, token=self.auth.get_jwt_token()).delete()
 
 
