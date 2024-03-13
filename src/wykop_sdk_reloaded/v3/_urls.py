@@ -64,3 +64,8 @@ MEDIA_EMBED_UPLOAD_URL = f"{API_URL}/media/embed"
 
 # profile
 PROFILES_LINKS_ADDED_URL = lambda username: f"{API_URL}/profile/users/{username}/links/added"
+
+# pms
+PMS_READ_ALL_URL = f"{API_URL}/pm/read-all"
+PMS_CONVERSATIONS_URL = f"{API_URL}/pm/conversations"
+PMS_CONVERSATION_URL = lambda username: f"{API_URL}/pm/conversations/{username}"

@@ -1059,6 +1059,86 @@ class _WykopApiClientProfileMixin(_WykopApiClientBase):
         ).get({"page": page, "limit": limit})
 
 
+class _WykopApiClientPMMixin(_WykopApiClientBase):
+    @auth_user_required
+    def pms_mark_all_pms_readed(self):
+        """
+        Oznacza wszystkie otrzymane wiadomości jako odczytanie.
+
+        Wymaga zalogowania uzytkownika.
+        """
+        return ApiRequester(
+            url=_urls.PMS_READ_ALL_URL,
+            token=self.auth.get_jwt_token()
+        ).put()
+    
+    @auth_user_required
+    def pms_list_conversations(self, username: str | None = None):
+        """
+        Lista konwersacji
+
+        params username: nazwa użytkownika (min. 3 znaki)
+
+        Wymaga zalogowania uzytkownika.
+        """
+        return ApiRequester(
+            url=_urls.PMS_CONVERSATIONS_URL,
+            token=self.auth.get_jwt_token()
+        ).get({"query": username})
+
+    @auth_user_required
+    def pms_create_pm(
+        self, 
+        username: str,
+        content: str,
+        photo: str | None = None,
+        embed: str | None = None):
+        """
+        Dodawanie nowej wiadomości
+
+        Wymaga zalogowania uzytkownika.
+        """
+        return ApiRequester(
+            url=_urls.PMS_CONVERSATION_URL(username),
+            token=self.auth.get_jwt_token()
+        ).post({"content": content, "photo": photo, "embed": embed})
+
+    @auth_user_required
+    def pms_get_conversation(
+        self,
+        username: str,
+        prev_message: str | None = None,
+        next_message: str | None = None
+    ):
+        """
+        Lista wiadomości z użytkownikiem
+
+        params prev_message: identyfikator (key) najstarszej widocznej wiadomości. Po jego podaniu zostaną doczytane starsze wiadomości.
+        params next_message: identyfikator (key) najnowszej widocznej wiadomości. Po jego podaniu zostaną doczytane nowsze wiadomości.
+
+        Wymaga zalogowania uzytkownika.
+        """
+        return ApiRequester(
+            url=_urls.PMS_CONVERSATION_URL(username),
+            token=self.auth.get_jwt_token()
+        ).get({"prev_message": prev_message, "next_message": next_message})
+
+    @auth_user_required
+    def pms_delete_conversation(
+        self,
+        username: str
+    ):
+        """
+        Usuwa konwersację. Znika tylko po stronie osoby wykonującej akcję.
+
+        Wymaga zalogowania uzytkownika.
+        """
+        return ApiRequester(
+            url=_urls.PMS_CONVERSATION_URL(username),
+            token=self.auth.get_jwt_token()
+        ).delete()
+
+
 class WykopApiClient(
     _WykopApiClientLinksMixin,
     _WykopApiClientLinkCommentsMixin,
@@ -1070,6 +1150,7 @@ class WykopApiClient(
     _WykopApiClientNotificationsMixin,
     _WykopApiClientMediaPhotosMixin,
     _WykopApiClientMediaEmedMixin,
-    _WykopApiClientProfileMixin
+    _WykopApiClientProfileMixin,
+    _WykopApiClientPMMixin
 ):
     pass

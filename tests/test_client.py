@@ -165,3 +165,8 @@ class TestWykopApiV3Client(TestCase):
         response = self.api.profiles_get_profile_links_added(env("WYKOP_USERNAME"))
         link_id = response["data"][0]["id"]
         self.api.links_delete_link(link_id)
+
+    def test_pms(self):
+        response = self.api.pms_list_conversations()
+        self.api.pms_get_conversation(response["data"][0]["user"]["username"])
+        self.api.pms_mark_all_pms_readed()
