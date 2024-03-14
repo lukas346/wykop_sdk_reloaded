@@ -170,3 +170,30 @@ class TestWykopApiV3Client(TestCase):
         response = self.api.pms_list_conversations()
         self.api.pms_get_conversation(response["data"][0]["user"]["username"])
         self.api.pms_mark_all_pms_readed()
+
+    def test_profiles(self):
+        user = "m__b"
+
+        self.api.profiles_get_my_profile()
+        self.api.profiles_get_my_profile_short()
+        
+        self.api.profiles_get_profile(user)
+        self.api.profiles_get_profile_short(user)
+        self.api.profiles_get_profile_actions(user)
+        self.api.profiles_get_profile_badges(user)
+
+        self.api.profiles_get_profile_entries_added(user)
+        self.api.profiles_get_profile_entries_commented(user)
+        self.api.profiles_get_profile_entries_voted(user)
+
+        self.api.profiles_get_profile_links_added(user)
+        self.api.profiles_get_profile_links_commented(user)
+        self.api.profiles_get_profile_links_up(user)
+        # self.api.profiles_get_profile_links_down(user)
+        self.api.profiles_get_profile_links_related(user)
+        self.api.profiles_get_profile_links_published(user)
+
+        self.api.profiles_get_profile_users_followers(user)
+        self.api.profiles_get_profile_users_following(user)
+
+        # self.api.profiles_get_profile_observed_tags(user)

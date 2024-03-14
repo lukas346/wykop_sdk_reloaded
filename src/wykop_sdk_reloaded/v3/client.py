@@ -1044,6 +1044,80 @@ class _WykopApiClientMediaEmedMixin(_WykopApiClientBase):
 
 
 class _WykopApiClientProfileMixin(_WykopApiClientBase):
+    @auth_user_required
+    def profiles_get_my_profile(self) -> dict:
+        """
+        Pobranie danych publicznych i prywatnych zalogowanego użytkownika.
+        """
+        return ApiRequester(
+            url=_urls.PROFILES_OWN_PROFILE_URL,
+            token=self.auth.get_jwt_token()
+        ).get()
+
+    @auth_user_required
+    def profiles_get_my_profile_short(self) -> dict:
+        """
+        Pobranie danych publicznych zalogowanego użytkownika - wersja skrócona.
+        """
+        return ApiRequester(
+            url=_urls.PROFILES_OWN_SHORT_PROFILE_URL,
+            token=self.auth.get_jwt_token()
+        ).get()
+
+    def profiles_get_profile(self, username: str) -> dict:
+        """
+        Pobranie danych publicznych danego użytkownika.
+        """
+        return ApiRequester(
+            url=_urls.PROFILES_PROFILE_URL(username),
+            token=self.auth.get_jwt_token()
+        ).get()
+
+    def profiles_get_profile_short(self, username: str) -> dict:
+        """
+        Pobranie danych publicznych danego użytkownika - wersja skrócona.
+        """
+        return ApiRequester(
+            url=_urls.PROFILES_PROFILE_SHORT_URL(username),
+            token=self.auth.get_jwt_token()
+        ).get()
+
+    def profiles_get_profile_actions(self, username: str) -> dict:
+        """
+        Lista akcji (wpisy i znaleziska) autorstwa danego użytkownika
+        """
+        return ApiRequester(
+            url=_urls.PROFILES_PROFILE_ACTIONS_URL(username),
+            token=self.auth.get_jwt_token()
+        ).get()
+
+    def profiles_get_profile_entries_added(self, username: str, page: str | None = None, limit: int | None = None) -> dict:
+        """
+        Lista wpisów autorstwa danego użytkownika
+        """
+        return ApiRequester(
+            url=_urls.PROFILES_PROFILE_ENTRIES_ADDED_URL(username),
+            token=self.auth.get_jwt_token()
+        ).get({"page": page, "limit": limit})
+
+    def profiles_get_profile_entries_voted(self, username: str, page: str | None = None, limit: int | None = None) -> dict:
+        """
+        Lista plusowanych wpisów przez użytkownika
+        """
+        return ApiRequester(
+            url=_urls.PROFILES_PROFILE_ENTRIES_VOTED_URL(username),
+            token=self.auth.get_jwt_token()
+        ).get({"page": page, "limit": limit})
+
+    def profiles_get_profile_entries_commented(self, username: str, page: str | None = None, limit: int | None = None) -> dict:
+        """
+        Lista komentarzy autorstwa danego użytkownika wraz z wpisem
+        """
+        return ApiRequester(
+            url=_urls.PROFILES_PROFILE_ENTRIES_COMMENTED_URL(username),
+            token=self.auth.get_jwt_token()
+        ).get({"page": page, "limit": limit})
+
     def profiles_get_profile_links_added(
             self,
             username: str,
@@ -1054,10 +1128,100 @@ class _WykopApiClientProfileMixin(_WykopApiClientBase):
         Lista znalezisk autorstwa danego użytkownika
         """
         return ApiRequester(
-            url=_urls.PROFILES_LINKS_ADDED_URL(username),
+            url=_urls.PROFILES_PROFILE_LINKS_ADDED_URL(username),
+            token=self.auth.get_jwt_token()
+        ).get({"page": page, "limit": limit})
+    
+    def profiles_get_profile_links_published(self, username: str, page: str | None = None, limit: int | None = None) -> dict:
+        """
+        Lista znalezisk autorstwa danego użytkownika, które trafiły na stronę główną
+        """
+        return ApiRequester(
+            url=_urls.PROFILES_PROFILE_LINKS_PUBLISHED_URL(username),
             token=self.auth.get_jwt_token()
         ).get({"page": page, "limit": limit})
 
+    def profiles_get_profile_links_up(self, username: str, page: str | None = None, limit: int | None = None) -> dict:
+        """
+        Lista znalezisk wykopanych przez danego użytkownika
+        """
+        return ApiRequester(
+            url=_urls.PROFILES_PROFILE_LINKS_UP_URL(username),
+            token=self.auth.get_jwt_token()
+        ).get({"page": page, "limit": limit})
+
+    @auth_user_required
+    def profiles_get_profile_links_down(self, username: str, page: str | None = None, limit: int | None = None) -> dict:
+        """
+        Lista znalezisk zakopanych przez zalogowanego użytkownika
+        """
+        return ApiRequester(
+            url=_urls.PROFILES_PROFILE_LINKS_DOWN_URL(username),
+            token=self.auth.get_jwt_token()
+        ).get({"page": page, "limit": limit})
+
+    def profiles_get_profile_links_commented(self, username: str, page: str | None = None, limit: int | None = None) -> dict:
+        """
+        Lista komentarzy autorstwa danego użytkownika wraz ze znaleziskiem
+        """
+        return ApiRequester(
+            url=_urls.PROFILES_PROFILE_LINKS_COMMENTED_URL(username),
+            token=self.auth.get_jwt_token()
+        ).get({"page": page, "limit": limit})
+
+    def profiles_get_profile_links_related(self, username: str, page: str | None = None, limit: int | None = None) -> dict:
+        """
+        Lista linków powiązanych autorstwa danego użytkownika wraz ze znaleziskiem
+        """
+        return ApiRequester(
+            url=_urls.PROFILES_PROFILE_LINKS_RELATED_URL(username),
+            token=self.auth.get_jwt_token()
+        ).get({"page": page, "limit": limit})
+
+    def profiles_get_profile_badges(self, username: str) -> dict:
+        """
+        Pobiera listę osiągnięć użytkownika
+        """
+        return ApiRequester(
+            url=_urls.PROFILES_PROFILE_BADGES_URL(username),
+            token=self.auth.get_jwt_token()
+        ).get()
+
+    def profiles_get_profile_tags(self, username: str) -> dict:
+        """
+        Lista tagów autorskich użytkownika
+        """
+        return ApiRequester(
+            url=_urls.PROFILES_PROFILE_TAGS_URL(username),
+            token=self.auth.get_jwt_token()
+        ).get()
+
+    def profiles_get_profile_observed_tags(self, username: str) -> dict:
+        """
+        Pobranie obserwowanych tagów użytkownika
+        """
+        return ApiRequester(
+            url=_urls.PROFILES_PROFILE_OBSERVED_TAGS_URL(username),
+            token=self.auth.get_jwt_token()
+        ).get()
+
+    def profiles_get_profile_users_following(self, username: str) -> dict:
+        """
+        Lista osób obserwowanych przez danego użytkownika
+        """
+        return ApiRequester(
+            url=_urls.PROFILES_PROFILE_OBSERVED_FOLLOWING_URL(username),
+            token=self.auth.get_jwt_token()
+        ).get()
+
+    def profiles_get_profile_users_followers(self, username: str) -> dict:
+        """
+        Lista osób obserwujących danego użytkownika
+        """
+        return ApiRequester(
+            url=_urls.PROFILES_PROFILE_OBSERVED_FOLLOWERS_URL(username),
+            token=self.auth.get_jwt_token()
+        ).get()
 
 class _WykopApiClientPMMixin(_WykopApiClientBase):
     @auth_user_required

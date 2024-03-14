@@ -383,7 +383,43 @@ Wgrywanie&nbsp;podglądu&nbsp;embed&nbsp;przez&nbsp;URL&nbsp;na&nbsp;serwer</spa
 
 <hr>
 Methods inherited from <a href="src.wykop_sdk_reloaded.v3.client.html#_WykopApiClientProfileMixin">_WykopApiClientProfileMixin</a>:<br>
+<dl><dt><a name="WykopApiClient-profiles_get_my_profile"><strong>profiles_get_my_profile</strong></a>(self) -&gt; dict</dt><dd><span class="code">Pobranie&nbsp;danych&nbsp;publicznych&nbsp;i&nbsp;prywatnych&nbsp;zalogowanego&nbsp;użytkownika.</span></dd></dl>
+
+<dl><dt><a name="WykopApiClient-profiles_get_my_profile_short"><strong>profiles_get_my_profile_short</strong></a>(self) -&gt; dict</dt><dd><span class="code">Pobranie&nbsp;danych&nbsp;publicznych&nbsp;zalogowanego&nbsp;użytkownika&nbsp;-&nbsp;wersja&nbsp;skrócona.</span></dd></dl>
+
+<dl><dt><a name="WykopApiClient-profiles_get_profile"><strong>profiles_get_profile</strong></a>(self, username: str) -&gt; dict</dt><dd><span class="code">Pobranie&nbsp;danych&nbsp;publicznych&nbsp;danego&nbsp;użytkownika.</span></dd></dl>
+
+<dl><dt><a name="WykopApiClient-profiles_get_profile_actions"><strong>profiles_get_profile_actions</strong></a>(self, username: str) -&gt; dict</dt><dd><span class="code">Lista&nbsp;akcji&nbsp;(wpisy&nbsp;i&nbsp;znaleziska)&nbsp;autorstwa&nbsp;danego&nbsp;użytkownika</span></dd></dl>
+
+<dl><dt><a name="WykopApiClient-profiles_get_profile_badges"><strong>profiles_get_profile_badges</strong></a>(self, username: str) -&gt; dict</dt><dd><span class="code">Pobiera&nbsp;listę&nbsp;osiągnięć&nbsp;użytkownika</span></dd></dl>
+
+<dl><dt><a name="WykopApiClient-profiles_get_profile_entries_added"><strong>profiles_get_profile_entries_added</strong></a>(self, username: str, page: str | None = None, limit: int | None = None) -&gt; dict</dt><dd><span class="code">Lista&nbsp;wpisów&nbsp;autorstwa&nbsp;danego&nbsp;użytkownika</span></dd></dl>
+
+<dl><dt><a name="WykopApiClient-profiles_get_profile_entries_commented"><strong>profiles_get_profile_entries_commented</strong></a>(self, username: str, page: str | None = None, limit: int | None = None) -&gt; dict</dt><dd><span class="code">Lista&nbsp;komentarzy&nbsp;autorstwa&nbsp;danego&nbsp;użytkownika&nbsp;wraz&nbsp;z&nbsp;wpisem</span></dd></dl>
+
+<dl><dt><a name="WykopApiClient-profiles_get_profile_entries_voted"><strong>profiles_get_profile_entries_voted</strong></a>(self, username: str, page: str | None = None, limit: int | None = None) -&gt; dict</dt><dd><span class="code">Lista&nbsp;plusowanych&nbsp;wpisów&nbsp;przez&nbsp;użytkownika</span></dd></dl>
+
 <dl><dt><a name="WykopApiClient-profiles_get_profile_links_added"><strong>profiles_get_profile_links_added</strong></a>(self, username: str, page: str | None = None, limit: int | None = None) -&gt; dict</dt><dd><span class="code">Lista&nbsp;znalezisk&nbsp;autorstwa&nbsp;danego&nbsp;użytkownika</span></dd></dl>
+
+<dl><dt><a name="WykopApiClient-profiles_get_profile_links_commented"><strong>profiles_get_profile_links_commented</strong></a>(self, username: str, page: str | None = None, limit: int | None = None) -&gt; dict</dt><dd><span class="code">Lista&nbsp;komentarzy&nbsp;autorstwa&nbsp;danego&nbsp;użytkownika&nbsp;wraz&nbsp;ze&nbsp;znaleziskiem</span></dd></dl>
+
+<dl><dt><a name="WykopApiClient-profiles_get_profile_links_down"><strong>profiles_get_profile_links_down</strong></a>(self, username: str, page: str | None = None, limit: int | None = None) -&gt; dict</dt><dd><span class="code">Lista&nbsp;znalezisk&nbsp;zakopanych&nbsp;przez&nbsp;danego&nbsp;użytkownika</span></dd></dl>
+
+<dl><dt><a name="WykopApiClient-profiles_get_profile_links_published"><strong>profiles_get_profile_links_published</strong></a>(self, username: str, page: str | None = None, limit: int | None = None) -&gt; dict</dt><dd><span class="code">Lista&nbsp;znalezisk&nbsp;autorstwa&nbsp;danego&nbsp;użytkownika,&nbsp;które&nbsp;trafiły&nbsp;na&nbsp;stronę&nbsp;główną</span></dd></dl>
+
+<dl><dt><a name="WykopApiClient-profiles_get_profile_links_related"><strong>profiles_get_profile_links_related</strong></a>(self, username: str, page: str | None = None, limit: int | None = None) -&gt; dict</dt><dd><span class="code">Lista&nbsp;linków&nbsp;powiązanych&nbsp;autorstwa&nbsp;danego&nbsp;użytkownika&nbsp;wraz&nbsp;ze&nbsp;znaleziskiem</span></dd></dl>
+
+<dl><dt><a name="WykopApiClient-profiles_get_profile_links_up"><strong>profiles_get_profile_links_up</strong></a>(self, username: str, page: str | None = None, limit: int | None = None) -&gt; dict</dt><dd><span class="code">Lista&nbsp;znalezisk&nbsp;wykopanych&nbsp;przez&nbsp;danego&nbsp;użytkownika</span></dd></dl>
+
+<dl><dt><a name="WykopApiClient-profiles_get_profile_observed_tags"><strong>profiles_get_profile_observed_tags</strong></a>(self, username: str) -&gt; dict</dt><dd><span class="code">Pobranie&nbsp;obserwowanych&nbsp;tagów&nbsp;użytkownika</span></dd></dl>
+
+<dl><dt><a name="WykopApiClient-profiles_get_profile_short"><strong>profiles_get_profile_short</strong></a>(self, username: str) -&gt; dict</dt><dd><span class="code">Pobranie&nbsp;danych&nbsp;publicznych&nbsp;danego&nbsp;użytkownika&nbsp;-&nbsp;wersja&nbsp;skrócona.</span></dd></dl>
+
+<dl><dt><a name="WykopApiClient-profiles_get_profile_tags"><strong>profiles_get_profile_tags</strong></a>(self, username: str) -&gt; dict</dt><dd><span class="code">Lista&nbsp;tagów&nbsp;autorskich&nbsp;użytkownika</span></dd></dl>
+
+<dl><dt><a name="WykopApiClient-profiles_get_profile_users_followers"><strong>profiles_get_profile_users_followers</strong></a>(self, username: str) -&gt; dict</dt><dd><span class="code">Lista&nbsp;osób&nbsp;obserwujących&nbsp;danego&nbsp;użytkownika</span></dd></dl>
+
+<dl><dt><a name="WykopApiClient-profiles_get_profile_users_following"><strong>profiles_get_profile_users_following</strong></a>(self, username: str) -&gt; dict</dt><dd><span class="code">Lista&nbsp;osób&nbsp;obserwowanych&nbsp;przez&nbsp;danego&nbsp;użytkownika</span></dd></dl>
 
 <hr>
 Methods inherited from <a href="src.wykop_sdk_reloaded.v3.client.html#_WykopApiClientPMMixin">_WykopApiClientPMMixin</a>:<br>
