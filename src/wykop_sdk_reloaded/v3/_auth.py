@@ -12,7 +12,7 @@ class AuthClient:
         self.jwt_user_token = None
         self.jwt_refresh_user_token = None
 
-    def __generate_jwt_user_token(self) -> str:
+    def __generate_jwt_app_token(self) -> str:
         return ApiRequester(url=_urls.AUTH_URL, token=None).post(
             data={"key": self.key, "secret": self.secret}
         )["data"]["token"]
@@ -35,7 +35,7 @@ class AuthClient:
         self.key = key
         self.secret = secret
 
-        self.jwt_app_token = self.__generate_jwt_user_token()
+        self.jwt_app_token = self.__generate_jwt_app_token()
 
     def authenticate_user(self, token: str, refresh_token: str):
         self.jwt_user_token = token
