@@ -49,7 +49,7 @@ class AuthClient:
         )["data"]
 
         self.jwt_user_token = response["token"]
-        self.refresh_user_token = response["refresh_token"]
+        self.jwt_refresh_user_token = response["refresh_token"]
 
         return response
 

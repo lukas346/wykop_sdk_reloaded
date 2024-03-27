@@ -135,31 +135,30 @@ class TestWykopApiV3Client(TestCase):
 
     def test_media_embed(self):
         response = self.api.embed_upload_url(
-            "https://www.youtube.com/watch?v=rtL5oMyBHPs&list=RDMMFa1UPDtZBYY&index=7",
+            "https://www.google.com",
         )
         assert response["data"]["key"]
 
-    def test_link_draft(self):
+    def test_entry_create(self):
         self.api.links_draft_list_drafts()
 
         response = self.api.links_draft_create_draft_step_one(
-            url="https://youtu.be/dvgZkm1xWPE?si=4lRM8tevSl9tvClT"
+            url="https://www.lipsum.com"
         )
         key = response["data"]["key"]
 
         self.api.links_draft_get_draft(key)
         self.api.links_draft_delete_draft(key)
         
-        
         response = self.api.links_draft_create_draft_step_one(
-            url="https://youtu.be/dvgZkm1xWPE?si=4lRM8tevSl9tvClT"
+            url="https://www.lipsum.com"
         )
         key = response["data"]["key"]
         self.api.links_draft_create_draft_step_two(
             key=key,
-            title="Coldplay Viva La Vida 4",
+            title="Lorem Ipsum",
             description="lorem " * 10,
-            tags=["muzyka"],
+            tags=["ipsum"],
             adult=False
         )
         response = self.api.profiles_get_profile_links_added(env("WYKOP_USERNAME"))
