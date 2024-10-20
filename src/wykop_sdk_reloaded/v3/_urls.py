@@ -57,6 +57,7 @@ NOTIFICATIONS_PM_URL = lambda id: f"{API_URL}/notifications/pm/{id}"
 
 # media - photos
 MEDIA_PHOTOS_UPLOAD_URL = f"{API_URL}/media/photos"
+MEDIA_PHOTOS_UPLOAD_FILE = f"{API_URL}/media/photos/upload"
 MEDIA_PHOTOS_GET_PHOTO_URL = lambda key: f"{API_URL}/media/photos/{key}"
 
 # media - embed

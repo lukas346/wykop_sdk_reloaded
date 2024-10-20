@@ -1015,6 +1015,22 @@ class _WykopApiClientMediaPhotosMixin(_WykopApiClientBase):
             url=_urls.MEDIA_PHOTOS_UPLOAD_URL,
             token=self.auth.get_jwt_token()
         ).post(data={"url": url}, params={"type": type.value})
+    
+    @auth_user_required
+    def photos_upload_file(self, picf: str, type: MediaPhotosType) -> dict:
+        """
+        Wymaga zalogowania uzytkownika.
+
+        Wgrywanie wskazanego pliku przez URL na serwer
+        Dozwolone jest wgrywanie multimedialnych plików o następujących 
+        mimetype: 'image/jpeg', 'image/jpg', 'image/pjpeg', 'image/gif', 'image/png', 'image/x-png'. 
+        Maksymalny rozmiar pliku to 10 MB.
+        """
+        return ApiRequester(
+            url=_urls.MEDIA_PHOTOS_UPLOAD_FILE,
+            token=self.auth.get_jwt_token()
+            ).post(files={"file": open(picf,"rb")}, params={"type": type.value})
+
 
     @auth_user_required
     def photos_delete_photo(self, key: str) -> dict:

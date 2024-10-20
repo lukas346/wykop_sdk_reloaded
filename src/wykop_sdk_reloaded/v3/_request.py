@@ -20,16 +20,19 @@ class ApiRequester:
         
         return response.json()
     
-    def post(self, data: dict | None = None, params: dict | None = None) -> dict | None:
+    def post(self, data: dict | None = None, params: dict | None = None, files: dict | None = None) -> dict | None:
         if data:
             data = {k: v for k, v in data.items() if v}
         if params:
             params = {k: v for k, v in params.items() if v}
+        if files:
+            files = {k: v for k, v in files.items() if v}
         
         response = requests.post(
             self.url,
             params=params,
             json={"data": data} if data else None,
+            files=files if files else None,
             headers=self.header
         )
 
