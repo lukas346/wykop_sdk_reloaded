@@ -19,13 +19,14 @@ from wykop_sdk_reloaded.v3.client import AuthClient, WykopApiClient
 
 auth = AuthClient()
 auth.authenticate_user("<USER_JWT_TOKEN>", "<USER_REFRESH_TOKEN>")
+auth.refresh_user_token()
 
 api = WykopApiClient(auth)
 
 # tworzy wpis na mikroblogu
-api.entries_create("michal bialek sami wiecie co #wykop")
+api.entries_create_entry("michal bialek sami wiecie co #wykop")
 # pobiera listę wpisów z mikrobloga
-api.entries_list()
+api.entries_list_entries()
 ```
 
 ```python
@@ -41,7 +42,7 @@ auth.authenticate_app("<APP_KEY>", "<APP_SECRET>")
 api = WykopApiClient(auth)
 
 # pobiera listę wpisów z mikrobloga
-api.entries_list()
+api.entries_list_entries()
 ```
 
 W razie wątpliwości przeczytaj README do końca i rzuć okiem na [testy](https://github.com/lukas346/wykop_sdk_reloaded/blob/main/tests/test_client.py).
@@ -118,7 +119,7 @@ auth.authenticate_user("<USER_JWT_TOKEN>", "<USER_REFRESH_TOKEN>")
 api = WykopApiClient(auth)
 
 # tworzy wpis na mikroblogu
-api.entries_create("michal bialek sami wiecie co #wykop")
+api.entries_create_entry("michal bialek sami wiecie co #wykop")
 ```
 
 Michal Białek jak zwykle przekombinował ale co mozna poradzic.
