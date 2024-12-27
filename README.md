@@ -1,6 +1,7 @@
 # Wykop SDK Reloaded
 
 [![PyPI version](https://badge.fury.io/py/wykop-sdk-reloaded.svg)](https://badge.fury.io/py/wykop-sdk-reloaded)
+[![PyPI Downloads](https://static.pepy.tech/badge/wykop-sdk-reloaded)](https://pepy.tech/projects/wykop-sdk-reloaded)
 
 ![](https://wykop.pl/cdn/c3201142/comment_ngdZRBR0tJ8YW99kIj66o0KiHeFrapCO.jpg)
 
