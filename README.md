@@ -49,7 +49,7 @@ W razie wątpliwości przeczytaj README do końca i rzuć okiem na [testy](https
 
 ## Dokumentacja
 
-[Link do dokumentacji WykopApiClient](http://htmlpreview.github.io/?https://github.com/lukas346/wykop_sdk_reloaded/blob/main/docs/index.html)
+[Link do dokumentacji WykopApiClient](https://lukas346.github.io/wykop_sdk_reloaded/)
 
 Jeśli brakuje akcji w sdk mozna bezposrednio wyslac request do wykop api dzięki metodzie `raw_request`.
 ```python
