@@ -6,6 +6,15 @@
 
 SDK umozliwijące komunikację z API (v3) wykopu na podstawie [oficjalnej dokumentacji](https://doc.wykop.pl/#/).
 
+## Dokumentacja
+
+[Link do dokumentacji ](https://lukas346.github.io/wykop_sdk_reloaded/)
+
+Jeśli brakuje akcji w sdk mozna bezposrednio wyslac request do wykop api dzięki metodzie `raw_request`.
+```python
+api.raw_request("https://wykop.pl/api/v3/tags/popular", RequestType.GET, data=None)
+```
+
 ## Instalacja
 
 ```bash
@@ -46,15 +55,6 @@ api.entries_list_entries()
 ```
 
 W razie wątpliwości przeczytaj README do końca i rzuć okiem na [testy](https://github.com/lukas346/wykop_sdk_reloaded/blob/main/tests/test_client.py).
-
-## Dokumentacja
-
-[Link do dokumentacji WykopApiClient](https://lukas346.github.io/wykop_sdk_reloaded/)
-
-Jeśli brakuje akcji w sdk mozna bezposrednio wyslac request do wykop api dzięki metodzie `raw_request`.
-```python
-api.raw_request("https://wykop.pl/api/v3/tags/popular", RequestType.GET, data=None)
-```
 
 ## Autoryzacja przez Wykop API
 
