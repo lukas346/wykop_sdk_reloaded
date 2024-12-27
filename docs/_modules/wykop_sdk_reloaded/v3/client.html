@@ -1,0 +1,1730 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="pl" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>wykop_sdk_reloaded.v3.client &mdash; Wykop SDK Reloaded  - dokumentacja</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=9893e7ba"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/translations.js?v=4c397337"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Indeks" href="../../../genindex.html" />
+    <link rel="search" title="Szukaj" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Wykop SDK Reloaded
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Szukaj" aria-label="Szukaj" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Przydatne linki:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Wprowadzenie</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Dokumentacja API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Wykop SDK Reloaded</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Kod modułu</a></li>
+      <li class="breadcrumb-item active">wykop_sdk_reloaded.v3.client</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Kod źródłowy modułu wykop_sdk_reloaded.v3.client</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_urls</span>
+<span class="kn">from</span> <span class="nn">._utils</span> <span class="kn">import</span> <span class="n">auth_user_required</span>
+<span class="kn">from</span> <span class="nn">._request</span> <span class="kn">import</span> <span class="n">ApiRequester</span>
+<span class="kn">from</span> <span class="nn">._auth</span> <span class="kn">import</span> <span class="n">AuthClient</span>
+<span class="kn">from</span> <span class="nn">.types</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">LinkType</span><span class="p">,</span>
+    <span class="n">LinkVoteDownReason</span><span class="p">,</span>
+    <span class="n">LinkCommentSortType</span><span class="p">,</span>
+    <span class="n">LinkCommentVoteType</span><span class="p">,</span>
+    <span class="n">RequestType</span><span class="p">,</span>
+    <span class="n">EntriesSortType</span><span class="p">,</span>
+    <span class="n">EntriesLastUpdateType</span><span class="p">,</span>
+    <span class="n">MediaPhotosType</span><span class="p">,</span>
+    <span class="n">StreamSortType</span>
+<span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">_WykopApiClientBase</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auth</span><span class="p">:</span> <span class="n">AuthClient</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auth</span> <span class="o">=</span> <span class="n">auth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">check_authentication</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">raw_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">:</span> <span class="n">RequestType</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Umozliwia bezposrednie odpytanie Wykop API</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">match</span> <span class="nb">type</span><span class="p">:</span>
+            <span class="k">case</span> <span class="n">RequestType</span><span class="o">.</span><span class="n">GET</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">WykopApiClient</span><span class="p">(</span><span class="s2">&quot;Metoda GET nie obsługuje wysyłania danych, moze chodzilo ci o parametr params?&quot;</span><span class="p">)</span>
+                
+                <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">())</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+            <span class="k">case</span> <span class="n">RequestType</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">())</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+            <span class="k">case</span> <span class="n">RequestType</span><span class="o">.</span><span class="n">PUT</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">params</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">WykopApiClient</span><span class="p">(</span><span class="s2">&quot;Metoda PUT nie obsługuje wysyłania parametrów, moze chodzilo ci o parametr data?&quot;</span><span class="p">)</span>
+
+                <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">())</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">case</span> <span class="n">RequestType</span><span class="o">.</span><span class="n">DELETE</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">params</span> <span class="ow">or</span> <span class="n">data</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">WykopApiClient</span><span class="p">(</span><span class="s2">&quot;Metoda DELETE nie obsługuje wysyłania parametrów i danych.&quot;</span><span class="p">)</span>
+                
+                <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">())</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="_WykopApiClientLinksMixin">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientLinksMixin">[dokumentacja]</a>
+<span class="k">class</span> <span class="nc">_WykopApiClientLinksMixin</span><span class="p">(</span><span class="n">_WykopApiClientBase</span><span class="p">):</span>
+<div class="viewcode-block" id="_WykopApiClientLinksMixin.links_list_links">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientLinksMixin.links_list_links">[dokumentacja]</a>
+    <span class="k">def</span> <span class="nf">links_list_links</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="nb">type</span><span class="p">:</span> <span class="n">LinkType</span><span class="p">,</span>
+            <span class="n">page</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Zwraca listę znalezisk</span>
+<span class="sd">        UWAGA: Parametr page przyjmuje dla użytkowników niezalogowanych int z numerem strony, a dla zalogowanych hash strony.</span>
+<span class="sd">        UWAGA2: Standardowa paginacja jest dostępna tylko dla użytkowników niezalogowanych. Paginacja dla użytkowników zalogowanych będzie zwracać hash next dla następnej strony i prev dla poprzedniej.</span>
+<span class="sd">        UWAGA3: Dla parametru type=upcoming (wykopalisko) paginacja przyjmuje parametr page jako int z nr strony, zarówno dla użytkowników zalogowanych i niezalogowanych</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">LINKS_URL</span><span class="p">,</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+            <span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="n">page</span><span class="p">,</span>
+            <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="n">limit</span>
+        <span class="p">})</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientLinksMixin.links_get_link">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientLinksMixin.links_get_link">[dokumentacja]</a>
+    <span class="k">def</span> <span class="nf">links_get_link</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">link_id</span><span class="p">:</span> <span class="nb">str</span>
+        <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymagana zalogowania uzytkownika</span>
+
+<span class="sd">        Szczególy znaleziska</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">LINKS_LINK_URL</span><span class="p">(</span><span class="n">link_id</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientLinksMixin.links_delete_link">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientLinksMixin.links_delete_link">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">links_delete_link</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">link_id</span><span class="p">:</span> <span class="nb">str</span>
+        <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymagana zalogowania uzytkownika</span>
+
+<span class="sd">        Usuwanie znaleziska</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">LINKS_LINK_URL</span><span class="p">(</span><span class="n">link_id</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientLinksMixin.links_update_link">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientLinksMixin.links_update_link">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">links_update_link</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">link_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">description</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">tags</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">adult</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">photo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Można modyfikować tylko własne znaleziska. </span>
+<span class="sd">        Autor może modyfikować wpis 15 minut od daty dodania. Link nie możne się znajdować na stronie głwnej. </span>
+<span class="sd">        UWAGA: Gdy znalezisko ma ustalone zdjęcie, a w edycji atrybut &quot;photo&quot; nie zostanie przesłany lub </span>
+<span class="sd">        będzie przesłany jako null - zdjęcie zostanie usunięte.</span>
+
+<span class="sd">        params photo: Załącznik użytkownika. W celu dodania należy podać &quot;key&quot; pliku z media/photo. </span>
+<span class="sd">        Akceptowane są tylko pliki przesłane jako typ links.</span>
+<span class="sd">        params tags: Tagi. Można wysłać do 6 tagów (bez &#39;#&#39;).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">LINKS_LINK_URL</span><span class="p">(</span><span class="n">link_id</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">post</span><span class="p">({</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="n">description</span><span class="p">,</span>
+            <span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="n">tags</span><span class="p">,</span>
+            <span class="s2">&quot;adult&quot;</span><span class="p">:</span> <span class="n">adult</span><span class="p">,</span>
+            <span class="s2">&quot;photo&quot;</span><span class="p">:</span> <span class="n">photo</span>
+        <span class="p">})</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientLinksMixin.links_vote_up_link">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientLinksMixin.links_vote_up_link">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">links_vote_up_link</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">link_id</span><span class="p">:</span> <span class="nb">str</span>
+        <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymagana zalogowania uzytkownika</span>
+
+<span class="sd">        Wykopanie znaleziska</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">LINKS_VOTE_UP_URL</span><span class="p">(</span><span class="n">link_id</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">post</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientLinksMixin.links_vote_down_link">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientLinksMixin.links_vote_down_link">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">links_vote_down_link</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">link_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">reason</span><span class="p">:</span> <span class="n">LinkVoteDownReason</span>
+        <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika</span>
+
+<span class="sd">        Zakopanie znaleziska</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">LINKS_VOTE_DOWN_URL</span><span class="p">(</span><span class="n">link_id</span><span class="p">,</span> <span class="n">reason</span><span class="o">.</span><span class="n">value</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">post</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientLinksMixin.links_vote_revoke_link">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientLinksMixin.links_vote_revoke_link">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">links_vote_revoke_link</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">link_id</span><span class="p">:</span> <span class="nb">str</span>
+        <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika</span>
+
+<span class="sd">        Cofnięcie wykopania lub zakopania znaleziska</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">LINKS_VOTES_URL</span><span class="p">(</span><span class="n">link_id</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="_WykopApiClientLinkCommentsMixin">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientLinkCommentsMixin">[dokumentacja]</a>
+<span class="k">class</span> <span class="nc">_WykopApiClientLinkCommentsMixin</span><span class="p">(</span><span class="n">_WykopApiClientBase</span><span class="p">):</span>
+<div class="viewcode-block" id="_WykopApiClientLinkCommentsMixin.link_comments_list_comments">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientLinkCommentsMixin.link_comments_list_comments">[dokumentacja]</a>
+    <span class="k">def</span> <span class="nf">link_comments_list_comments</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">link_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">sort</span><span class="p">:</span> <span class="n">LinkCommentSortType</span> <span class="o">=</span> <span class="n">LinkCommentSortType</span><span class="o">.</span><span class="n">NEWEST</span><span class="p">,</span>
+        <span class="n">page</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Komentarze do znaleziska</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">LINK_COMMENTS_URL</span><span class="p">(</span><span class="n">link_id</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;sort&quot;</span><span class="p">:</span> <span class="n">sort</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+            <span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="n">page</span><span class="p">,</span>
+            <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="n">limit</span>
+        <span class="p">})</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientLinkCommentsMixin.link_comments_create_comment">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientLinkCommentsMixin.link_comments_create_comment">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">link_comments_create_comment</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">link_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">content</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">photo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">embed</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">adult</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Dodawanie nowego komentarza do wykopaliska</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">LINK_COMMENTS_URL</span><span class="p">(</span><span class="n">link_id</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">content</span><span class="p">,</span>
+            <span class="s2">&quot;photo&quot;</span><span class="p">:</span> <span class="n">photo</span><span class="p">,</span>
+            <span class="s2">&quot;embed&quot;</span><span class="p">:</span> <span class="n">embed</span><span class="p">,</span>
+            <span class="s2">&quot;adult&quot;</span><span class="p">:</span> <span class="n">adult</span>
+        <span class="p">})</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientLinkCommentsMixin.link_comments_create_comment_to_comment">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientLinkCommentsMixin.link_comments_create_comment_to_comment">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">link_comments_create_comment_to_comment</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">link_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">comment_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">content</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">photo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">embed</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">adult</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Dodawanie nowego podkomentarza do istniejącego komentarza</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">LINK_COMMENTS_COMMENT_URL</span><span class="p">(</span><span class="n">link_id</span><span class="p">,</span> <span class="n">comment_id</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">content</span><span class="p">,</span>
+            <span class="s2">&quot;photo&quot;</span><span class="p">:</span> <span class="n">photo</span><span class="p">,</span>
+            <span class="s2">&quot;embed&quot;</span><span class="p">:</span> <span class="n">embed</span><span class="p">,</span>
+            <span class="s2">&quot;adult&quot;</span><span class="p">:</span> <span class="n">adult</span>
+        <span class="p">})</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientLinkCommentsMixin.link_comments_update_comment">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientLinkCommentsMixin.link_comments_update_comment">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">link_comments_update_comment</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">link_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">comment_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">content</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">photo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">embed</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">adult</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Edycja komentarza do wykopaliska</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">LINK_COMMENTS_COMMENT_URL</span><span class="p">(</span><span class="n">link_id</span><span class="p">,</span> <span class="n">comment_id</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">content</span><span class="p">,</span>
+            <span class="s2">&quot;photo&quot;</span><span class="p">:</span> <span class="n">photo</span><span class="p">,</span>
+            <span class="s2">&quot;embed&quot;</span><span class="p">:</span> <span class="n">embed</span><span class="p">,</span>
+            <span class="s2">&quot;adult&quot;</span><span class="p">:</span> <span class="n">adult</span>
+        <span class="p">})</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientLinkCommentsMixin.link_comments_delete_comment">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientLinkCommentsMixin.link_comments_delete_comment">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">link_comments_delete_comment</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">link_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">comment_id</span><span class="p">:</span> <span class="nb">str</span>
+        <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Usuwanie komentarza do wykopaliska</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">LINK_COMMENTS_COMMENT_URL</span><span class="p">(</span><span class="n">link_id</span><span class="p">,</span> <span class="n">comment_id</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientLinkCommentsMixin.link_comments_vote_comment">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientLinkCommentsMixin.link_comments_vote_comment">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">link_comments_vote_comment</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">link_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">comment_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="nb">type</span><span class="p">:</span> <span class="n">LinkCommentVoteType</span><span class="p">,</span>
+        <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Glosowanie na komentarz do wykopaliska</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">LINK_COMMENTS_COMMENT_VOTE_URL</span><span class="p">(</span><span class="n">link_id</span><span class="p">,</span> <span class="n">comment_id</span><span class="p">,</span> <span class="nb">type</span><span class="o">.</span><span class="n">value</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">post</span><span class="p">()</span></div>
+
+   
+<div class="viewcode-block" id="_WykopApiClientLinkCommentsMixin.link_comments_vote_revoke_comment">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientLinkCommentsMixin.link_comments_vote_revoke_comment">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">link_comments_vote_revoke_comment</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">link_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">comment_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Cofanie oceny komentarza do wykopaliska</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">LINK_COMMENTS_COMMENT_VOTE_REVOKE_URL</span><span class="p">(</span><span class="n">link_id</span><span class="p">,</span> <span class="n">comment_id</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="_WykopApiClientLinkDraftMixin">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientLinkDraftMixin">[dokumentacja]</a>
+<span class="k">class</span> <span class="nc">_WykopApiClientLinkDraftMixin</span><span class="p">(</span><span class="n">_WykopApiClientBase</span><span class="p">):</span>
+<div class="viewcode-block" id="_WykopApiClientLinkDraftMixin.links_draft_list_drafts">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientLinkDraftMixin.links_draft_list_drafts">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">links_draft_list_drafts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Lista wersji roboczych linków zalogowanego użytkownika</span>
+<span class="sd">        Wersje robocze są kasowane po upływie 24h.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">LINK_DRAFTS_URL</span><span class="p">,</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientLinkDraftMixin.links_draft_create_draft_step_one">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientLinkDraftMixin.links_draft_create_draft_step_one">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">links_draft_create_draft_step_one</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Dodawanie nowego linku w wersji roboczej krok pierwszy</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">LINK_DRAFTS_URL</span><span class="p">,</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">post</span><span class="p">({</span><span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">url</span><span class="p">})</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientLinkDraftMixin.links_draft_create_draft_step_two">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientLinkDraftMixin.links_draft_create_draft_step_two">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">links_draft_create_draft_step_two</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">title</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">description</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">tags</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">adult</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">photo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Dodawanie nowego linku w wersji roboczej krok drugi - publikacja.</span>
+
+<span class="sd">        params photo: Załącznik użytkownika. W celu dodania należy podać &quot;key&quot; pliku z media/photo. </span>
+<span class="sd">        Akceptowane są tylko pliki przesłane jako typ links.</span>
+<span class="sd">        params tags: Tagi. Można wysłać do 6 tagów (bez &#39;#&#39;).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">LINK_DRAFTS_DRAFT_URL</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">post</span><span class="p">({</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="n">description</span><span class="p">,</span>
+            <span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="n">tags</span><span class="p">,</span>
+            <span class="s2">&quot;adult&quot;</span><span class="p">:</span> <span class="n">adult</span><span class="p">,</span>
+            <span class="s2">&quot;photo&quot;</span><span class="p">:</span> <span class="n">photo</span><span class="p">,</span>
+            <span class="s2">&quot;selected_image&quot;</span><span class="p">:</span> <span class="mi">1</span>
+        <span class="p">})</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientLinkDraftMixin.links_draft_update_draft">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientLinkDraftMixin.links_draft_update_draft">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">links_draft_update_draft</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">tags</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">adult</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">photo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Aktualizacja linku w wersji roboczej</span>
+
+<span class="sd">        params photo: Załącznik użytkownika. W celu dodania należy podać &quot;key&quot; pliku z media/photo. </span>
+<span class="sd">        Akceptowane są tylko pliki przesłane jako typ links.</span>
+<span class="sd">        params tags: Tagi. Można wysłać do 6 tagów (bez &#39;#&#39;).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">LINK_DRAFTS_DRAFT_URL</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">put</span><span class="p">({</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="n">description</span><span class="p">,</span>
+            <span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="n">tags</span><span class="p">,</span>
+            <span class="s2">&quot;adult&quot;</span><span class="p">:</span> <span class="n">adult</span><span class="p">,</span>
+            <span class="s2">&quot;photo&quot;</span><span class="p">:</span> <span class="n">photo</span><span class="p">,</span>
+            <span class="s2">&quot;selected_image&quot;</span><span class="p">:</span> <span class="mi">1</span>
+        <span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="_WykopApiClientLinkDraftMixin.links_draft_get_draft">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientLinkDraftMixin.links_draft_get_draft">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">links_draft_get_draft</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Zwraca wersję robocza linku</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">LINK_DRAFTS_DRAFT_URL</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="_WykopApiClientLinkDraftMixin.links_draft_delete_draft">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientLinkDraftMixin.links_draft_delete_draft">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">links_draft_delete_draft</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Usuwa wersję robocza linku</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">LINK_DRAFTS_DRAFT_URL</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="_WykopApiClientTagsMixin">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientTagsMixin">[dokumentacja]</a>
+<span class="k">class</span> <span class="nc">_WykopApiClientTagsMixin</span><span class="p">(</span><span class="n">_WykopApiClientBase</span><span class="p">):</span>
+<div class="viewcode-block" id="_WykopApiClientTagsMixin.tags_get_popular_tags">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientTagsMixin.tags_get_popular_tags">[dokumentacja]</a>
+    <span class="k">def</span> <span class="nf">tags_get_popular_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Zwraca listę popularnych tagów.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">TAGS_POPULAR_URL</span><span class="p">,</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientTagsMixin.tags_get_popular_user_tags">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientTagsMixin.tags_get_popular_user_tags">[dokumentacja]</a>
+    <span class="k">def</span> <span class="nf">tags_get_popular_user_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Kolekcja popularnych tagów autorskich (max do 10 wyników)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">TAGS_POPULAR_USER_URL</span><span class="p">,</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
+
+        
+<div class="viewcode-block" id="_WykopApiClientTagsMixin.tags_get_related_tag">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientTagsMixin.tags_get_related_tag">[dokumentacja]</a>
+    <span class="k">def</span> <span class="nf">tags_get_related_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Kolekcja powiązanych tagów (max do 10 wyników)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">TAGS_RELATED_TAG_URL</span><span class="p">(</span><span class="n">tag</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientTagsMixin.tags_get_detail_of_tag">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientTagsMixin.tags_get_detail_of_tag">[dokumentacja]</a>
+    <span class="k">def</span> <span class="nf">tags_get_detail_of_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Szczegóły tagu</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">TAGS_DETAIL_TAG_URL</span><span class="p">(</span><span class="n">tag</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientTagsMixin.tags_edit_tag">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientTagsMixin.tags_edit_tag">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">tags_edit_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">photo</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Właściciel tagu może modyfikować tło (base64 str) oraz opis tagu.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">TAGS_DETAIL_TAG_URL</span><span class="p">(</span><span class="n">tag</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">put</span><span class="p">({</span>
+            <span class="s2">&quot;photo&quot;</span><span class="p">:</span> <span class="n">photo</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="n">description</span>
+        <span class="p">})</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientTagsMixin.tags_get_stream_of_tag">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientTagsMixin.tags_get_stream_of_tag">[dokumentacja]</a>
+    <span class="k">def</span> <span class="nf">tags_get_stream_of_tag</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">sort</span><span class="p">:</span> <span class="n">StreamSortType</span> <span class="o">=</span> <span class="n">StreamSortType</span><span class="o">.</span><span class="n">ALL</span><span class="p">,</span>
+            <span class="n">page</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">year</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">month</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Zwraca pełną liste wpisów i znalezisk z konkretnego tagu UWAGA: </span>
+<span class="sd">        Parametr page przyjmuje dla użytkowników niezalogowanych int z numerem strony, a dla zalogowanych hash strony. </span>
+<span class="sd">        UWAGA2: Standardowa paginacja jest dostępna tylko dla użytkowników niezalogowanych. </span>
+<span class="sd">        Paginacja dla użytkowników zalogowanych będzie zwracać hash next dla następnej strony i prev dla poprzedniej.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">TAGS_STREAM_TAG_URL</span><span class="p">(</span><span class="n">tag</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;sort&quot;</span><span class="p">:</span> <span class="n">sort</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+            <span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="n">page</span><span class="p">,</span>
+            <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="n">limit</span><span class="p">,</span>
+            <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="n">year</span><span class="p">,</span>
+            <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="n">month</span>
+        <span class="p">})</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientTagsMixin.tags_get_tag_owners">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientTagsMixin.tags_get_tag_owners">[dokumentacja]</a>
+    <span class="k">def</span> <span class="nf">tags_get_tag_owners</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Kolekcja autorów tagu (short profile)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">TAGS_TAG_OWNERS_URL</span><span class="p">(</span><span class="n">tag</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="_WykopApiClientArticleMixin">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientArticleMixin">[dokumentacja]</a>
+<span class="k">class</span> <span class="nc">_WykopApiClientArticleMixin</span><span class="p">(</span><span class="n">_WykopApiClientBase</span><span class="p">):</span>
+<div class="viewcode-block" id="_WykopApiClientArticleMixin.articles_list_articles_by_tag">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientArticleMixin.articles_list_articles_by_tag">[dokumentacja]</a>
+    <span class="k">def</span> <span class="nf">articles_list_articles_by_tag</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">sort</span><span class="p">:</span> <span class="n">StreamSortType</span> <span class="o">=</span> <span class="n">StreamSortType</span><span class="o">.</span><span class="n">ALL</span><span class="p">,</span>
+            <span class="n">page</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">year</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">month</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Zwraca pełną liste artykułów konkretnego tagu </span>
+<span class="sd">        UWAGA: Parametr page przyjmuje dla użytkowników niezalogowanych int z numerem strony, a dla zalogowanych hash strony. </span>
+<span class="sd">        UWAGA2: Standardowa paginacja jest dostępna tylko dla użytkowników niezalogowanych. </span>
+<span class="sd">        Paginacja dla użytkowników zalogowanych będzie zwracać hash next dla następnej strony i prev dla poprzedniej.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">TAGS_STREAM_TAG_URL</span><span class="p">(</span><span class="n">tag</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;article&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;sort&quot;</span><span class="p">:</span> <span class="n">sort</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+            <span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="n">page</span><span class="p">,</span>
+            <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="n">limit</span><span class="p">,</span>
+            <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="n">year</span><span class="p">,</span>
+            <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="n">month</span>
+        <span class="p">})</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientArticleMixin.articles_get_article">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientArticleMixin.articles_get_article">[dokumentacja]</a>
+    <span class="k">def</span> <span class="nf">articles_get_article</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">article_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Pobranie informacji o artykule</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">ARTICLES_ARTICLE_URL</span><span class="p">(</span><span class="n">article_id</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="_WykopApiClientEntriesMixin">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientEntriesMixin">[dokumentacja]</a>
+<span class="k">class</span> <span class="nc">_WykopApiClientEntriesMixin</span><span class="p">(</span><span class="n">_WykopApiClientBase</span><span class="p">):</span>
+<div class="viewcode-block" id="_WykopApiClientEntriesMixin.entries_create_entry">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientEntriesMixin.entries_create_entry">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">entries_create_entry</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">content</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">photo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">embed</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">adult</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Dodawanie nowego wpisu na mikroblogu</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">ENTRIES_URL</span><span class="p">,</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">content</span><span class="p">,</span>
+            <span class="s2">&quot;photo&quot;</span><span class="p">:</span> <span class="n">photo</span><span class="p">,</span>
+            <span class="s2">&quot;embed&quot;</span><span class="p">:</span> <span class="n">embed</span><span class="p">,</span>
+            <span class="s2">&quot;adult&quot;</span><span class="p">:</span> <span class="n">adult</span>
+        <span class="p">})</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientEntriesMixin.entries_list_entries">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientEntriesMixin.entries_list_entries">[dokumentacja]</a>
+    <span class="k">def</span> <span class="nf">entries_list_entries</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">sort</span><span class="p">:</span> <span class="n">EntriesSortType</span> <span class="o">=</span> <span class="n">EntriesSortType</span><span class="o">.</span><span class="n">HOT</span><span class="p">,</span>
+        <span class="n">last_update</span><span class="p">:</span> <span class="n">EntriesLastUpdateType</span> <span class="o">=</span> <span class="n">EntriesLastUpdateType</span><span class="o">.</span><span class="n">TWELVE</span><span class="p">,</span>
+        <span class="n">page</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Zwraca wpisy z mikrobloga. </span>
+<span class="sd">        UWAGA: Parametr page przyjmuje dla użytkowników niezalogowanych int z numerem strony, a dla zalogowanych hash strony. </span>
+<span class="sd">        UWAGA2: Standardowa paginacja jest dostępna tylko dla użytkowników niezalogowanych. </span>
+<span class="sd">        Paginacja dla użytkowników zalogowanych będzie zwracać hash next dla następnej strony i prev dla poprzedniej.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">ENTRIES_URL</span><span class="p">,</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;sort&quot;</span><span class="p">:</span> <span class="n">sort</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+            <span class="s2">&quot;last_update&quot;</span><span class="p">:</span> <span class="n">last_update</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+            <span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="n">page</span><span class="p">,</span>
+            <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="n">limit</span>
+        <span class="p">})</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientEntriesMixin.entries_list_entries_by_tag">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientEntriesMixin.entries_list_entries_by_tag">[dokumentacja]</a>
+    <span class="k">def</span> <span class="nf">entries_list_entries_by_tag</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">sort</span><span class="p">:</span> <span class="n">StreamSortType</span> <span class="o">=</span> <span class="n">StreamSortType</span><span class="o">.</span><span class="n">ALL</span><span class="p">,</span>
+            <span class="n">page</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">year</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">month</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Zwraca pełną liste wpisów konkretnego tagu </span>
+<span class="sd">        UWAGA: Parametr page przyjmuje dla użytkowników niezalogowanych int z numerem strony, a dla zalogowanych hash strony. </span>
+<span class="sd">        UWAGA2: Standardowa paginacja jest dostępna tylko dla użytkowników niezalogowanych. </span>
+<span class="sd">        Paginacja dla użytkowników zalogowanych będzie zwracać hash next dla następnej strony i prev dla poprzedniej.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">TAGS_STREAM_TAG_URL</span><span class="p">(</span><span class="n">tag</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;entry&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;sort&quot;</span><span class="p">:</span> <span class="n">sort</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+            <span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="n">page</span><span class="p">,</span>
+            <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="n">limit</span><span class="p">,</span>
+            <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="n">year</span><span class="p">,</span>
+            <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="n">month</span>
+        <span class="p">})</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientEntriesMixin.entries_get_entry">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientEntriesMixin.entries_get_entry">[dokumentacja]</a>
+    <span class="k">def</span> <span class="nf">entries_get_entry</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">entry_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Pobranie wpisu z mikrobloga</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">ENTRIES_ENTRY_URL</span><span class="p">(</span><span class="n">entry_id</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientEntriesMixin.entries_update_entry">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientEntriesMixin.entries_update_entry">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">entries_update_entry</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">entry_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">content</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">photo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">embed</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">adult</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Edycja wpisu z mikrobloga</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">ENTRIES_ENTRY_URL</span><span class="p">(</span><span class="n">entry_id</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">put</span><span class="p">({</span>
+            <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">content</span><span class="p">,</span>
+            <span class="s2">&quot;photo&quot;</span><span class="p">:</span> <span class="n">photo</span><span class="p">,</span>
+            <span class="s2">&quot;embed&quot;</span><span class="p">:</span> <span class="n">embed</span><span class="p">,</span>
+            <span class="s2">&quot;adult&quot;</span><span class="p">:</span> <span class="n">adult</span>
+        <span class="p">})</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientEntriesMixin.entries_delete_entry">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientEntriesMixin.entries_delete_entry">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">entries_delete_entry</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">entry_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Usuwanie wpisu z mikrobloga</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">ENTRIES_ENTRY_URL</span><span class="p">(</span><span class="n">entry_id</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientEntriesMixin.entries_vote_up_entry">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientEntriesMixin.entries_vote_up_entry">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">entries_vote_up_entry</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">entry_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Głosowanie na wpis z mikrobloga</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">ENTRIES_ENTRY_VOTES_URL</span><span class="p">(</span><span class="n">entry_id</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">post</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientEntriesMixin.entries_vote_revoke_entry">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientEntriesMixin.entries_vote_revoke_entry">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">entries_vote_revoke_entry</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">entry_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Cofnięcie głosu na wpis z mikrobloga</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">ENTRIES_ENTRY_VOTES_URL</span><span class="p">(</span><span class="n">entry_id</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="_WykopApiClientEntryCommentsMixin">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientEntryCommentsMixin">[dokumentacja]</a>
+<span class="k">class</span> <span class="nc">_WykopApiClientEntryCommentsMixin</span><span class="p">(</span><span class="n">_WykopApiClientBase</span><span class="p">):</span>
+<div class="viewcode-block" id="_WykopApiClientEntryCommentsMixin.entry_comments_list_comments">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientEntryCommentsMixin.entry_comments_list_comments">[dokumentacja]</a>
+    <span class="k">def</span> <span class="nf">entry_comments_list_comments</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">entry_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">page</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Komentarze do wpisu z mikrobloga</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">ENTRY_COMMENTS_URL</span><span class="p">(</span><span class="n">entry_id</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="n">page</span><span class="p">,</span>
+            <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="n">limit</span>
+        <span class="p">})</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientEntryCommentsMixin.entry_comments_create_comment">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientEntryCommentsMixin.entry_comments_create_comment">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">entry_comments_create_comment</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">entry_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">content</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">photo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">embed</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">adult</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Dodawanie nowego komentarza do wpisu na mikroblogu</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">ENTRY_COMMENTS_URL</span><span class="p">(</span><span class="n">entry_id</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">content</span><span class="p">,</span>
+            <span class="s2">&quot;photo&quot;</span><span class="p">:</span> <span class="n">photo</span><span class="p">,</span>
+            <span class="s2">&quot;embed&quot;</span><span class="p">:</span> <span class="n">embed</span><span class="p">,</span>
+            <span class="s2">&quot;adult&quot;</span><span class="p">:</span> <span class="n">adult</span>
+        <span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="_WykopApiClientEntryCommentsMixin.entry_comments_update_comment">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientEntryCommentsMixin.entry_comments_update_comment">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">entry_comments_update_comment</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">entry_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">comment_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">content</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">photo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">embed</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">adult</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Edycja komentarza do wpisu na mikroblogu</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">ENTRY_COMMENTS_COMMENT_URL</span><span class="p">(</span><span class="n">entry_id</span><span class="p">,</span> <span class="n">comment_id</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">content</span><span class="p">,</span>
+            <span class="s2">&quot;photo&quot;</span><span class="p">:</span> <span class="n">photo</span><span class="p">,</span>
+            <span class="s2">&quot;embed&quot;</span><span class="p">:</span> <span class="n">embed</span><span class="p">,</span>
+            <span class="s2">&quot;adult&quot;</span><span class="p">:</span> <span class="n">adult</span>
+        <span class="p">})</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientEntryCommentsMixin.entry_comments_delete_comment">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientEntryCommentsMixin.entry_comments_delete_comment">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">entry_comments_delete_comment</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">entry_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">comment_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Usuwanie komentarza do wpisu z mikrobloga</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">ENTRY_COMMENTS_COMMENT_URL</span><span class="p">(</span><span class="n">entry_id</span><span class="p">,</span> <span class="n">comment_id</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientEntryCommentsMixin.entry_comments_vote_up_comment">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientEntryCommentsMixin.entry_comments_vote_up_comment">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">entry_comments_vote_up_comment</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">entry_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">comment_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Głosowanie na komentarz do wpisu z mikrobloga</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">ENTRY_COMMENTS_VOTES_URL</span><span class="p">(</span><span class="n">entry_id</span><span class="p">,</span> <span class="n">comment_id</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">post</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientEntryCommentsMixin.entry_comments_vote_revoke_comment">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientEntryCommentsMixin.entry_comments_vote_revoke_comment">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">entry_comments_vote_revoke_comment</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">entry_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">comment_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Cofanie głosu na komentarz do wpisu z mikrobloga</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">ENTRY_COMMENTS_VOTES_URL</span><span class="p">(</span><span class="n">entry_id</span><span class="p">,</span> <span class="n">comment_id</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="_WykopApiClientNotificationsMixin">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientNotificationsMixin">[dokumentacja]</a>
+<span class="k">class</span> <span class="nc">_WykopApiClientNotificationsMixin</span><span class="p">(</span><span class="n">_WykopApiClientBase</span><span class="p">):</span>
+<div class="viewcode-block" id="_WykopApiClientNotificationsMixin.notifinations_status">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientNotificationsMixin.notifinations_status">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">notifinations_status</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Sprawdzenie czy zalogowany użytkownik posiada nowe powiadomienia</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">NOTIFICATIONS_STATUS_URL</span><span class="p">,</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="_WykopApiClientNotificationsMixin.notifinations_list_entries">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientNotificationsMixin.notifinations_list_entries">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">notifinations_list_entries</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Pobranie notyfikacji</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">NOTIFICATIONS_ENTRIES_URL</span><span class="p">,</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="_WykopApiClientNotificationsMixin.notifinations_mark_all_entries_readed">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientNotificationsMixin.notifinations_mark_all_entries_readed">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">notifinations_mark_all_entries_readed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Oznaczenie powiadomień użytkownika jako przeczytane</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">NOTIFICATIONS_ENTRIES_ALL_URL</span><span class="p">,</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">put</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientNotificationsMixin.notifinations_delete_all_entries">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientNotificationsMixin.notifinations_delete_all_entries">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">notifinations_delete_all_entries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Usunięcie wszystkich powiadomień użytkownika</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">NOTIFICATIONS_ENTRIES_ALL_URL</span><span class="p">,</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="_WykopApiClientNotificationsMixin.notifinations_get_entry">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientNotificationsMixin.notifinations_get_entry">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">notifinations_get_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Pobranie jednej notyfikacji dla zalogowanego użytkownika</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">NOTIFICATIONS_ENTRY_URL</span><span class="p">(</span><span class="n">entry_id</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="_WykopApiClientNotificationsMixin.notifinations_mark_entry_readed">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientNotificationsMixin.notifinations_mark_entry_readed">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">notifinations_mark_entry_readed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Ustawienie powiadomienia jako przeczytane</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">NOTIFICATIONS_ENTRY_URL</span><span class="p">(</span><span class="n">entry_id</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">put</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="_WykopApiClientNotificationsMixin.notifinations_delete_entry">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientNotificationsMixin.notifinations_delete_entry">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">notifinations_delete_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Usunięcie powiadomienia</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">NOTIFICATIONS_ENTRY_URL</span><span class="p">(</span><span class="n">entry_id</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientNotificationsMixin.notifinations_list_pms">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientNotificationsMixin.notifinations_list_pms">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">notifinations_list_pms</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Pobranie listy notyfikacji o prywatnych wiadomościach użytkownika</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">NOTIFICATIONS_PMS_URL</span><span class="p">,</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="_WykopApiClientNotificationsMixin.notifinations_mark_all_pms_readed">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientNotificationsMixin.notifinations_mark_all_pms_readed">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">notifinations_mark_all_pms_readed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Ustawienie wszystkich powiadomień z prywatnych wiadomości jako przeczytane</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">NOTIFICATIONS_PMS_ALL_URL</span><span class="p">,</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">put</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientNotificationsMixin.notifinations_delete_all_pms">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientNotificationsMixin.notifinations_delete_all_pms">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">notifinations_delete_all_pms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Usunięcie wszystkich powiadomień z prywatnych wiadomości</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">NOTIFICATIONS_PMS_ALL_URL</span><span class="p">,</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="_WykopApiClientNotificationsMixin.notifinations_get_pm">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientNotificationsMixin.notifinations_get_pm">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">notifinations_get_pm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pm_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Pobranie pw dla zalogowanego użytkownika</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">NOTIFICATIONS_PM_URL</span><span class="p">(</span><span class="n">pm_id</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="_WykopApiClientNotificationsMixin.notifinations_mark_pm_readed">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientNotificationsMixin.notifinations_mark_pm_readed">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">notifinations_mark_pm_readed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pm_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Ustawienie pw jako przeczytanej</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">NOTIFICATIONS_PM_URL</span><span class="p">(</span><span class="n">pm_id</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">put</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="_WykopApiClientNotificationsMixin.notifinations_delete_pm">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientNotificationsMixin.notifinations_delete_pm">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">notifinations_delete_pm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pm_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Usunięcie pw</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">NOTIFICATIONS_PM_URL</span><span class="p">(</span><span class="n">pm_id</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="_WykopApiClientMediaPhotosMixin">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientMediaPhotosMixin">[dokumentacja]</a>
+<span class="k">class</span> <span class="nc">_WykopApiClientMediaPhotosMixin</span><span class="p">(</span><span class="n">_WykopApiClientBase</span><span class="p">):</span>
+<div class="viewcode-block" id="_WykopApiClientMediaPhotosMixin.photos_upload_url">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientMediaPhotosMixin.photos_upload_url">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">photos_upload_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">:</span> <span class="n">MediaPhotosType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Wgrywanie wskazanego pliku przez URL na serwer</span>
+<span class="sd">        Dozwolone jest wgrywanie multimedialnych plików o następujących </span>
+<span class="sd">        mimetype: &#39;image/jpeg&#39;, &#39;image/jpg&#39;, &#39;image/pjpeg&#39;, &#39;image/gif&#39;, &#39;image/png&#39;, &#39;image/x-png&#39;. </span>
+<span class="sd">        Maksymalny rozmiar pliku to 10 MB.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">MEDIA_PHOTOS_UPLOAD_URL</span><span class="p">,</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">url</span><span class="p">},</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">value</span><span class="p">})</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientMediaPhotosMixin.photos_upload_file">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientMediaPhotosMixin.photos_upload_file">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">photos_upload_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">picf</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">:</span> <span class="n">MediaPhotosType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Wgrywanie wskazanego pliku przez URL na serwer</span>
+<span class="sd">        Dozwolone jest wgrywanie multimedialnych plików o następujących </span>
+<span class="sd">        mimetype: &#39;image/jpeg&#39;, &#39;image/jpg&#39;, &#39;image/pjpeg&#39;, &#39;image/gif&#39;, &#39;image/png&#39;, &#39;image/x-png&#39;. </span>
+<span class="sd">        Maksymalny rozmiar pliku to 10 MB.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">MEDIA_PHOTOS_UPLOAD_FILE</span><span class="p">,</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">files</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;file&quot;</span><span class="p">:</span> <span class="nb">open</span><span class="p">(</span><span class="n">picf</span><span class="p">,</span><span class="s2">&quot;rb&quot;</span><span class="p">)},</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="nb">type</span><span class="o">.</span><span class="n">value</span><span class="p">})</span></div>
+
+
+
+<div class="viewcode-block" id="_WykopApiClientMediaPhotosMixin.photos_delete_photo">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientMediaPhotosMixin.photos_delete_photo">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">photos_delete_photo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Właściciel pliku posiada możliwość jego usunięcia z serwera.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">MEDIA_PHOTOS_GET_PHOTO_URL</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="_WykopApiClientMediaEmedMixin">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientMediaEmedMixin">[dokumentacja]</a>
+<span class="k">class</span> <span class="nc">_WykopApiClientMediaEmedMixin</span><span class="p">(</span><span class="n">_WykopApiClientBase</span><span class="p">):</span>
+<div class="viewcode-block" id="_WykopApiClientMediaEmedMixin.embed_upload_url">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientMediaEmedMixin.embed_upload_url">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">embed_upload_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+
+<span class="sd">        Wgrywanie podglądu embed przez URL na serwer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">MEDIA_EMBED_UPLOAD_URL</span><span class="p">,</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">post</span><span class="p">({</span><span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">url</span><span class="p">})</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="_WykopApiClientProfileMixin">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientProfileMixin">[dokumentacja]</a>
+<span class="k">class</span> <span class="nc">_WykopApiClientProfileMixin</span><span class="p">(</span><span class="n">_WykopApiClientBase</span><span class="p">):</span>
+<div class="viewcode-block" id="_WykopApiClientProfileMixin.profiles_get_my_profile">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientProfileMixin.profiles_get_my_profile">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">profiles_get_my_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Pobranie danych publicznych i prywatnych zalogowanego użytkownika.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">PROFILES_OWN_PROFILE_URL</span><span class="p">,</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="_WykopApiClientProfileMixin.profiles_get_my_profile_short">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientProfileMixin.profiles_get_my_profile_short">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">profiles_get_my_profile_short</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Pobranie danych publicznych zalogowanego użytkownika - wersja skrócona.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">PROFILES_OWN_SHORT_PROFILE_URL</span><span class="p">,</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="_WykopApiClientProfileMixin.profiles_get_profile">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientProfileMixin.profiles_get_profile">[dokumentacja]</a>
+    <span class="k">def</span> <span class="nf">profiles_get_profile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Pobranie danych publicznych danego użytkownika.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">PROFILES_PROFILE_URL</span><span class="p">(</span><span class="n">username</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="_WykopApiClientProfileMixin.profiles_get_profile_short">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientProfileMixin.profiles_get_profile_short">[dokumentacja]</a>
+    <span class="k">def</span> <span class="nf">profiles_get_profile_short</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Pobranie danych publicznych danego użytkownika - wersja skrócona.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">PROFILES_PROFILE_SHORT_URL</span><span class="p">(</span><span class="n">username</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="_WykopApiClientProfileMixin.profiles_get_profile_actions">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientProfileMixin.profiles_get_profile_actions">[dokumentacja]</a>
+    <span class="k">def</span> <span class="nf">profiles_get_profile_actions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lista akcji (wpisy i znaleziska) autorstwa danego użytkownika</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">PROFILES_PROFILE_ACTIONS_URL</span><span class="p">(</span><span class="n">username</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="_WykopApiClientProfileMixin.profiles_get_profile_entries_added">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientProfileMixin.profiles_get_profile_entries_added">[dokumentacja]</a>
+    <span class="k">def</span> <span class="nf">profiles_get_profile_entries_added</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">page</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lista wpisów autorstwa danego użytkownika</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">PROFILES_PROFILE_ENTRIES_ADDED_URL</span><span class="p">(</span><span class="n">username</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">({</span><span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="n">page</span><span class="p">,</span> <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="n">limit</span><span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="_WykopApiClientProfileMixin.profiles_get_profile_entries_voted">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientProfileMixin.profiles_get_profile_entries_voted">[dokumentacja]</a>
+    <span class="k">def</span> <span class="nf">profiles_get_profile_entries_voted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">page</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lista plusowanych wpisów przez użytkownika</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">PROFILES_PROFILE_ENTRIES_VOTED_URL</span><span class="p">(</span><span class="n">username</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">({</span><span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="n">page</span><span class="p">,</span> <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="n">limit</span><span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="_WykopApiClientProfileMixin.profiles_get_profile_entries_commented">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientProfileMixin.profiles_get_profile_entries_commented">[dokumentacja]</a>
+    <span class="k">def</span> <span class="nf">profiles_get_profile_entries_commented</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">page</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lista komentarzy autorstwa danego użytkownika wraz z wpisem</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">PROFILES_PROFILE_ENTRIES_COMMENTED_URL</span><span class="p">(</span><span class="n">username</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">({</span><span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="n">page</span><span class="p">,</span> <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="n">limit</span><span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="_WykopApiClientProfileMixin.profiles_get_profile_links_added">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientProfileMixin.profiles_get_profile_links_added">[dokumentacja]</a>
+    <span class="k">def</span> <span class="nf">profiles_get_profile_links_added</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">page</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lista znalezisk autorstwa danego użytkownika</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">PROFILES_PROFILE_LINKS_ADDED_URL</span><span class="p">(</span><span class="n">username</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">({</span><span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="n">page</span><span class="p">,</span> <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="n">limit</span><span class="p">})</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientProfileMixin.profiles_get_profile_links_published">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientProfileMixin.profiles_get_profile_links_published">[dokumentacja]</a>
+    <span class="k">def</span> <span class="nf">profiles_get_profile_links_published</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">page</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lista znalezisk autorstwa danego użytkownika, które trafiły na stronę główną</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">PROFILES_PROFILE_LINKS_PUBLISHED_URL</span><span class="p">(</span><span class="n">username</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">({</span><span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="n">page</span><span class="p">,</span> <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="n">limit</span><span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="_WykopApiClientProfileMixin.profiles_get_profile_links_up">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientProfileMixin.profiles_get_profile_links_up">[dokumentacja]</a>
+    <span class="k">def</span> <span class="nf">profiles_get_profile_links_up</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">page</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lista znalezisk wykopanych przez danego użytkownika</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">PROFILES_PROFILE_LINKS_UP_URL</span><span class="p">(</span><span class="n">username</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">({</span><span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="n">page</span><span class="p">,</span> <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="n">limit</span><span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="_WykopApiClientProfileMixin.profiles_get_profile_links_down">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientProfileMixin.profiles_get_profile_links_down">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">profiles_get_profile_links_down</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">page</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lista znalezisk zakopanych przez zalogowanego użytkownika</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">PROFILES_PROFILE_LINKS_DOWN_URL</span><span class="p">(</span><span class="n">username</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">({</span><span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="n">page</span><span class="p">,</span> <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="n">limit</span><span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="_WykopApiClientProfileMixin.profiles_get_profile_links_commented">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientProfileMixin.profiles_get_profile_links_commented">[dokumentacja]</a>
+    <span class="k">def</span> <span class="nf">profiles_get_profile_links_commented</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">page</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lista komentarzy autorstwa danego użytkownika wraz ze znaleziskiem</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">PROFILES_PROFILE_LINKS_COMMENTED_URL</span><span class="p">(</span><span class="n">username</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">({</span><span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="n">page</span><span class="p">,</span> <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="n">limit</span><span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="_WykopApiClientProfileMixin.profiles_get_profile_links_related">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientProfileMixin.profiles_get_profile_links_related">[dokumentacja]</a>
+    <span class="k">def</span> <span class="nf">profiles_get_profile_links_related</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">page</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lista linków powiązanych autorstwa danego użytkownika wraz ze znaleziskiem</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">PROFILES_PROFILE_LINKS_RELATED_URL</span><span class="p">(</span><span class="n">username</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">({</span><span class="s2">&quot;page&quot;</span><span class="p">:</span> <span class="n">page</span><span class="p">,</span> <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="n">limit</span><span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="_WykopApiClientProfileMixin.profiles_get_profile_badges">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientProfileMixin.profiles_get_profile_badges">[dokumentacja]</a>
+    <span class="k">def</span> <span class="nf">profiles_get_profile_badges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Pobiera listę osiągnięć użytkownika</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">PROFILES_PROFILE_BADGES_URL</span><span class="p">(</span><span class="n">username</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="_WykopApiClientProfileMixin.profiles_get_profile_tags">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientProfileMixin.profiles_get_profile_tags">[dokumentacja]</a>
+    <span class="k">def</span> <span class="nf">profiles_get_profile_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lista tagów autorskich użytkownika</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">PROFILES_PROFILE_TAGS_URL</span><span class="p">(</span><span class="n">username</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="_WykopApiClientProfileMixin.profiles_get_profile_observed_tags">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientProfileMixin.profiles_get_profile_observed_tags">[dokumentacja]</a>
+    <span class="k">def</span> <span class="nf">profiles_get_profile_observed_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Pobranie obserwowanych tagów użytkownika</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">PROFILES_PROFILE_OBSERVED_TAGS_URL</span><span class="p">(</span><span class="n">username</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="_WykopApiClientProfileMixin.profiles_get_profile_users_following">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientProfileMixin.profiles_get_profile_users_following">[dokumentacja]</a>
+    <span class="k">def</span> <span class="nf">profiles_get_profile_users_following</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lista osób obserwowanych przez danego użytkownika</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">PROFILES_PROFILE_OBSERVED_FOLLOWING_URL</span><span class="p">(</span><span class="n">username</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="_WykopApiClientProfileMixin.profiles_get_profile_users_followers">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientProfileMixin.profiles_get_profile_users_followers">[dokumentacja]</a>
+    <span class="k">def</span> <span class="nf">profiles_get_profile_users_followers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lista osób obserwujących danego użytkownika</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">PROFILES_PROFILE_OBSERVED_FOLLOWERS_URL</span><span class="p">(</span><span class="n">username</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span></div>
+</div>
+
+
+<div class="viewcode-block" id="_WykopApiClientPMMixin">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientPMMixin">[dokumentacja]</a>
+<span class="k">class</span> <span class="nc">_WykopApiClientPMMixin</span><span class="p">(</span><span class="n">_WykopApiClientBase</span><span class="p">):</span>
+<div class="viewcode-block" id="_WykopApiClientPMMixin.pms_mark_all_pms_readed">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientPMMixin.pms_mark_all_pms_readed">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">pms_mark_all_pms_readed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Oznacza wszystkie otrzymane wiadomości jako odczytanie.</span>
+
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">PMS_READ_ALL_URL</span><span class="p">,</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">put</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="_WykopApiClientPMMixin.pms_list_conversations">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientPMMixin.pms_list_conversations">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">pms_list_conversations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lista konwersacji</span>
+
+<span class="sd">        params username: nazwa użytkownika (min. 3 znaki)</span>
+
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">PMS_CONVERSATIONS_URL</span><span class="p">,</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">({</span><span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="n">username</span><span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="_WykopApiClientPMMixin.pms_create_pm">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientPMMixin.pms_create_pm">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">pms_create_pm</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> 
+        <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">photo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">embed</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Dodawanie nowej wiadomości</span>
+
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">PMS_CONVERSATION_URL</span><span class="p">(</span><span class="n">username</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">post</span><span class="p">({</span><span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">content</span><span class="p">,</span> <span class="s2">&quot;photo&quot;</span><span class="p">:</span> <span class="n">photo</span><span class="p">,</span> <span class="s2">&quot;embed&quot;</span><span class="p">:</span> <span class="n">embed</span><span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="_WykopApiClientPMMixin.pms_get_conversation">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientPMMixin.pms_get_conversation">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">pms_get_conversation</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">prev_message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">next_message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lista wiadomości z użytkownikiem</span>
+
+<span class="sd">        params prev_message: identyfikator (key) najstarszej widocznej wiadomości. Po jego podaniu zostaną doczytane starsze wiadomości.</span>
+<span class="sd">        params next_message: identyfikator (key) najnowszej widocznej wiadomości. Po jego podaniu zostaną doczytane nowsze wiadomości.</span>
+
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">PMS_CONVERSATION_URL</span><span class="p">(</span><span class="n">username</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">({</span><span class="s2">&quot;prev_message&quot;</span><span class="p">:</span> <span class="n">prev_message</span><span class="p">,</span> <span class="s2">&quot;next_message&quot;</span><span class="p">:</span> <span class="n">next_message</span><span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="_WykopApiClientPMMixin.pms_delete_conversation">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client._WykopApiClientPMMixin.pms_delete_conversation">[dokumentacja]</a>
+    <span class="nd">@auth_user_required</span>
+    <span class="k">def</span> <span class="nf">pms_delete_conversation</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">username</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Usuwa konwersację. Znika tylko po stronie osoby wykonującej akcję.</span>
+
+<span class="sd">        Wymaga zalogowania uzytkownika.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ApiRequester</span><span class="p">(</span>
+            <span class="n">url</span><span class="o">=</span><span class="n">_urls</span><span class="o">.</span><span class="n">PMS_CONVERSATION_URL</span><span class="p">(</span><span class="n">username</span><span class="p">),</span>
+            <span class="n">token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">get_jwt_token</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="WykopApiClient">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.client.WykopApiClient">[dokumentacja]</a>
+<span class="k">class</span> <span class="nc">WykopApiClient</span><span class="p">(</span>
+    <span class="n">_WykopApiClientLinksMixin</span><span class="p">,</span>
+    <span class="n">_WykopApiClientLinkCommentsMixin</span><span class="p">,</span>
+    <span class="n">_WykopApiClientLinkDraftMixin</span><span class="p">,</span>
+    <span class="n">_WykopApiClientArticleMixin</span><span class="p">,</span>
+    <span class="n">_WykopApiClientTagsMixin</span><span class="p">,</span>
+    <span class="n">_WykopApiClientEntriesMixin</span><span class="p">,</span>
+    <span class="n">_WykopApiClientEntryCommentsMixin</span><span class="p">,</span>
+    <span class="n">_WykopApiClientNotificationsMixin</span><span class="p">,</span>
+    <span class="n">_WykopApiClientMediaPhotosMixin</span><span class="p">,</span>
+    <span class="n">_WykopApiClientMediaEmedMixin</span><span class="p">,</span>
+    <span class="n">_WykopApiClientProfileMixin</span><span class="p">,</span>
+    <span class="n">_WykopApiClientPMMixin</span>
+<span class="p">):</span>
+    <span class="k">pass</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Prawa zastrzeżone 2024, lukas346.</p>
+  </div>
+
+  Zbudowano w <a href="https://www.sphinx-doc.org/">Sphinx</a> używając
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    dostarczone przez <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
