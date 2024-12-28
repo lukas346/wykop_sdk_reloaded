@@ -18,3 +18,11 @@ Bazowe klasy wyjątków
    :members:
    :undoc-members:
    :show-inheritance:
+
+Typy
+--------------------------------------
+
+.. automodule:: wykop_sdk_reloaded.v3.types
+   :members:
+   :undoc-members:
+   :show-inheritance:

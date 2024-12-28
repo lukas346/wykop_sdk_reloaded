@@ -40,9 +40,3 @@ language = 'pl'
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
 autodoc_typehints = "description"
-
-def setup(app):
-    def handle_bases(app, name, obj, options, bases: list):
-        if object in bases:
-            bases.remove(object)
-    app.connect('autodoc-process-bases', handle_bases)

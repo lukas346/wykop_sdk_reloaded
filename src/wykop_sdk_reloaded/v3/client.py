@@ -45,6 +45,9 @@ class _WykopApiClientBase:
 
 
 class _WykopApiClientLinksMixin(_WykopApiClientBase):
+    """
+    Mixin zawierający akcje na znaleziskach (linkach).
+    """
     def links_list_links(
             self,
             type: LinkType,
@@ -176,6 +179,9 @@ class _WykopApiClientLinksMixin(_WykopApiClientBase):
 
 
 class _WykopApiClientLinkCommentsMixin(_WykopApiClientBase):
+    """
+    Mixin zawierający akcje na komentarzach do znalezisk.
+    """
     def link_comments_list_comments(
         self,
         link_id: str,
@@ -323,6 +329,9 @@ class _WykopApiClientLinkCommentsMixin(_WykopApiClientBase):
 
 
 class _WykopApiClientLinkDraftMixin(_WykopApiClientBase):
+    """
+    Mixin zawierający akcje do zarządzania stworzonymi znaleziskami (linkami).
+    """
     @auth_user_required
     def links_draft_list_drafts(self):
         """
@@ -436,6 +445,9 @@ class _WykopApiClientLinkDraftMixin(_WykopApiClientBase):
 
 
 class _WykopApiClientTagsMixin(_WykopApiClientBase):
+    """
+    Mixin zawierający akcje na tagach.
+    """
     def tags_get_popular_tags(self) -> dict:
         """
         Zwraca listę popularnych tagów.
@@ -527,6 +539,9 @@ class _WykopApiClientTagsMixin(_WykopApiClientBase):
 
 
 class _WykopApiClientArticleMixin(_WykopApiClientBase):
+    """
+    Mixin zawierający akcje na artykułach.
+    """
     def articles_list_articles_by_tag(
             self,
             tag: str,
@@ -568,6 +583,9 @@ class _WykopApiClientArticleMixin(_WykopApiClientBase):
 
 
 class _WykopApiClientEntriesMixin(_WykopApiClientBase):
+    """
+    Mixin zawierający akcje na wpisach.
+    """
     @auth_user_required
     def entries_create_entry(
             self,
@@ -725,6 +743,9 @@ class _WykopApiClientEntriesMixin(_WykopApiClientBase):
 
 
 class _WykopApiClientEntryCommentsMixin(_WykopApiClientBase):
+    """
+    Mixin zawierający akcje na komentarzach do wpisów.
+    """
     def entry_comments_list_comments(
         self,
         entry_id: str,
@@ -843,6 +864,9 @@ class _WykopApiClientEntryCommentsMixin(_WykopApiClientBase):
 
 
 class _WykopApiClientNotificationsMixin(_WykopApiClientBase):
+    """
+    Mixin zawierający akcje na powiedomieniach.
+    """
     @auth_user_required
     def notifinations_status(self) -> dict:
         """
@@ -1001,6 +1025,9 @@ class _WykopApiClientNotificationsMixin(_WykopApiClientBase):
 
 
 class _WykopApiClientMediaPhotosMixin(_WykopApiClientBase):
+    """
+    Mixin zawierający akcje na zdjęciach/obrazkach.
+    """
     @auth_user_required
     def photos_upload_url(self, url: str, type: MediaPhotosType) -> dict:
         """
@@ -1046,6 +1073,9 @@ class _WykopApiClientMediaPhotosMixin(_WykopApiClientBase):
 
 
 class _WykopApiClientMediaEmedMixin(_WykopApiClientBase):
+    """
+    Mixin zawierający akcje na zewnętrznych linkach.
+    """
     @auth_user_required
     def embed_upload_url(self, url: str) -> dict:
         """
@@ -1060,6 +1090,9 @@ class _WykopApiClientMediaEmedMixin(_WykopApiClientBase):
 
 
 class _WykopApiClientProfileMixin(_WykopApiClientBase):
+    """
+    Mixin zawierający akcje na profilu użytkownika.
+    """
     @auth_user_required
     def profiles_get_my_profile(self) -> dict:
         """
@@ -1240,6 +1273,9 @@ class _WykopApiClientProfileMixin(_WykopApiClientBase):
         ).get()
 
 class _WykopApiClientPMMixin(_WykopApiClientBase):
+    """
+    Mixin zawierający akcje na prywatnych wiadomościach.
+    """
     @auth_user_required
     def pms_mark_all_pms_readed(self):
         """
@@ -1333,4 +1369,7 @@ class WykopApiClient(
     _WykopApiClientProfileMixin,
     _WykopApiClientPMMixin
 ):
+    """
+    Główna klasa klienta, zbiór mixinów.
+    """
     pass

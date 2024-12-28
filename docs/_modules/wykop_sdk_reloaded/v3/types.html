@@ -1,0 +1,215 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="pl" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>wykop_sdk_reloaded.v3.types &mdash; Wykop SDK Reloaded  - dokumentacja</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=9893e7ba"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/translations.js?v=4c397337"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Indeks" href="../../../genindex.html" />
+    <link rel="search" title="Szukaj" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Wykop SDK Reloaded
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Szukaj" aria-label="Szukaj" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Przydatne linki:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Wprowadzenie</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Dokumentacja API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Wykop SDK Reloaded</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Kod modułu</a></li>
+      <li class="breadcrumb-item active">wykop_sdk_reloaded.v3.types</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Kod źródłowy modułu wykop_sdk_reloaded.v3.types</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+
+
+<div class="viewcode-block" id="RequestType">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.types.RequestType">[dokumentacja]</a>
+<span class="k">class</span> <span class="nc">RequestType</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Typ żądania HTTP</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">GET</span> <span class="o">=</span> <span class="s2">&quot;get&quot;</span>
+    <span class="n">POST</span> <span class="o">=</span> <span class="s2">&quot;post&quot;</span>
+    <span class="n">PUT</span> <span class="o">=</span> <span class="s2">&quot;put&quot;</span>
+    <span class="n">DELETE</span> <span class="o">=</span> <span class="s2">&quot;delete&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="LinkCommentSortType">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.types.LinkCommentSortType">[dokumentacja]</a>
+<span class="k">class</span> <span class="nc">LinkCommentSortType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sposoby sortowania komentarzy pod znaleziskiem</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">NEWEST</span> <span class="o">=</span> <span class="s2">&quot;newest&quot;</span>
+    <span class="n">BEST</span> <span class="o">=</span> <span class="s2">&quot;best&quot;</span>
+    <span class="n">OLDEST</span> <span class="o">=</span> <span class="s2">&quot;oldest&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="LinkCommentVoteType">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.types.LinkCommentVoteType">[dokumentacja]</a>
+<span class="k">class</span> <span class="nc">LinkCommentVoteType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Typ oceny komentarza pod znaleziskiem</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">UP</span> <span class="o">=</span> <span class="s2">&quot;up&quot;</span>
+    <span class="n">DOWN</span> <span class="o">=</span> <span class="s2">&quot;down&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="LinkType">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.types.LinkType">[dokumentacja]</a>
+<span class="k">class</span> <span class="nc">LinkType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Typ znaliska (strona główna bądź wykopalisko)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">HOMEPAGE</span> <span class="o">=</span> <span class="s2">&quot;homepage&quot;</span>
+    <span class="n">UPCOMING</span> <span class="o">=</span> <span class="s2">&quot;upcoming&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="LinkVoteDownReason">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.types.LinkVoteDownReason">[dokumentacja]</a>
+<span class="k">class</span> <span class="nc">LinkVoteDownReason</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Powód zakopania znaleziska</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DUPLICATE</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">SPAM</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">UNTRUE</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">INAPPROPRIATE</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">UNSUITABLE</span> <span class="o">=</span> <span class="mi">5</span></div>
+
+
+
+<div class="viewcode-block" id="EntriesSortType">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.types.EntriesSortType">[dokumentacja]</a>
+<span class="k">class</span> <span class="nc">EntriesSortType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sposób sortowania wpisów</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">HOT</span> <span class="o">=</span> <span class="s2">&quot;hot&quot;</span>
+    <span class="n">NEWEST</span> <span class="o">=</span> <span class="s2">&quot;newest&quot;</span>
+    <span class="n">ACTIVE</span> <span class="o">=</span> <span class="s2">&quot;active&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="EntriesLastUpdateType">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.types.EntriesLastUpdateType">[dokumentacja]</a>
+<span class="k">class</span> <span class="nc">EntriesLastUpdateType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    (Działa tylko dla gorących wpisów) Określony przedział czasowy dla gorących wpisów</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ONE</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">TWO</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">THREE</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">SIX</span> <span class="o">=</span> <span class="mi">6</span>
+    <span class="n">TWELVE</span> <span class="o">=</span> <span class="mi">12</span>
+    <span class="n">TWENTY_FOUR</span> <span class="o">=</span> <span class="mi">24</span></div>
+
+
+
+<div class="viewcode-block" id="MediaPhotosType">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.types.MediaPhotosType">[dokumentacja]</a>
+<span class="k">class</span> <span class="nc">MediaPhotosType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Przeznaczenie wysłanego zdjęcia</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">SETTINGS</span> <span class="o">=</span> <span class="s2">&quot;settings&quot;</span>
+    <span class="n">COMMENTS</span> <span class="o">=</span> <span class="s2">&quot;comments&quot;</span>
+    <span class="n">LINKS</span> <span class="o">=</span> <span class="s2">&quot;links&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="StreamSortType">
+<a class="viewcode-back" href="../../../modules.html#wykop_sdk_reloaded.v3.types.StreamSortType">[dokumentacja]</a>
+<span class="k">class</span> <span class="nc">StreamSortType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Typ obiektów</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ALL</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
+    <span class="n">BEST</span> <span class="o">=</span> <span class="s2">&quot;best&quot;</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Prawa zastrzeżone 2024, lukas346.</p>
+  </div>
+
+  Zbudowano w <a href="https://www.sphinx-doc.org/">Sphinx</a> używając
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    dostarczone przez <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
