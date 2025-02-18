@@ -7,6 +7,10 @@
 
 SDK umozliwijące komunikację z API (v3) wykopu na podstawie [oficjalnej dokumentacji](https://doc.wykop.pl/#/).
 
+----------
+
+Jeśli projekt ci się do czegoś przydał i [to postaw mi kawę ☕](https://buycoffee.to/lukas346). Nie musi być to kawa z Starbucksa, taka biedronkowa też jest ok ;) Każda nawet najmniejsza dotacja to sygnał że to co robię jest dla was wartościowe i warto to utrzymywać.
+
 ## Dokumentacja
 
 [Link do dokumentacji ](https://lukas346.github.io/wykop_sdk_reloaded/)
