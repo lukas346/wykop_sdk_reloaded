@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}/src/wykop_sdk_reloaded"
+    ]
+}

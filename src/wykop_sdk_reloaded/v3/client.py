@@ -710,6 +710,19 @@ class _WykopApiClientEntriesMixin(_WykopApiClientBase):
             url=_urls.ENTRIES_ENTRY_URL(entry_id),
             token=self.auth.get_jwt_token()
         ).delete()
+
+    def entries_list_voters(
+        self,
+        entry_id: str,
+        page: int = 1
+    ) -> dict:
+        """
+        Pobiera nazwy użytkowników którzy głosowali na wpis z mikrobloga. Wynik jest paginowany.
+        """
+        return ApiRequester(
+            url=_urls.ENTRIES_ENTRY_VOTES_URL(entry_id),
+            token=self.auth.get_jwt_token()
+        ).get(params={"page": page})
     
     @auth_user_required
     def entries_vote_up_entry(

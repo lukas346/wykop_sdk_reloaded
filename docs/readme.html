@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wprowadzenie &mdash; Wykop SDK Reloaded  - dokumentacja</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
@@ -16,7 +16,7 @@
       <script src="_static/documentation_options.js?v=9893e7ba"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-      <script src="_static/translations.js?v=4c397337"></script>
+      <script src="_static/translations.js?v=2827c288"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Indeks" href="genindex.html" />
     <link rel="search" title="Szukaj" href="search.html" />
@@ -106,7 +106,7 @@ dokumentacji.</p>
 </section>
 <section id="przykladowe-uzycie">
 <h2>Przykładowe uzycie<a class="headerlink" href="#przykladowe-uzycie" title="Link to this heading"></a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">wykop_sdk_reloaded.v3.client</span> <span class="kn">import</span> <span class="n">AuthClient</span><span class="p">,</span> <span class="n">WykopApiClient</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">wykop_sdk_reloaded.v3.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">AuthClient</span><span class="p">,</span> <span class="n">WykopApiClient</span>
 
 <span class="n">auth</span> <span class="o">=</span> <span class="n">AuthClient</span><span class="p">()</span>
 <span class="n">auth</span><span class="o">.</span><span class="n">authenticate_user</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
@@ -120,7 +120,7 @@ dokumentacji.</p>
 <span class="n">api</span><span class="o">.</span><span class="n">entries_list_entries</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">wykop_sdk_reloaded.v3.client</span> <span class="kn">import</span> <span class="n">AuthClient</span><span class="p">,</span> <span class="n">WykopApiClient</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">wykop_sdk_reloaded.v3.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">AuthClient</span><span class="p">,</span> <span class="n">WykopApiClient</span>
 
 <span class="n">auth</span> <span class="o">=</span> <span class="n">AuthClient</span><span class="p">()</span>
 <span class="sd">&quot;&quot;&quot;</span>
@@ -176,7 +176,7 @@ sumie nic poza tym.</strong></p>
 musicie się dodatkowo zalogować. Oto instrukcja jak to zrobić.</p>
 <p>Gdy juz macie dane aplikacji wywołujecie metodę <code class="docutils literal notranslate"><span class="pre">.wykop_connect()</span></code>
 klasy <code class="docutils literal notranslate"><span class="pre">AuthClient</span></code> która zwraca Wam link pod który musicie się udać.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">wykop_sdk_reloaded.v3.client</span> <span class="kn">import</span> <span class="n">AuthClient</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">wykop_sdk_reloaded.v3.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">AuthClient</span>
 
 <span class="n">auth</span> <span class="o">=</span> <span class="n">AuthClient</span><span class="p">()</span>
 <span class="n">auth</span><span class="o">.</span><span class="n">authenticate_app</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
@@ -198,7 +198,7 @@ tworzeniu aplikacji w polu “Podaj adres zwrotny dla WykopConnect”.</p>
 <p>Wyciągacie z URLa token i rtoken, zapisujecie gdzieś sobie na przykład w
 pliku <code class="docutils literal notranslate"><span class="pre">.env</span></code> waszej aplikacji i teraz w końcu mozecie korzystac z
 pelni mozliwosci wykopowego api.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">wykop_sdk_reloaded.v3.client</span> <span class="kn">import</span> <span class="n">AuthClient</span><span class="p">,</span> <span class="n">WykopApiClient</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">wykop_sdk_reloaded.v3.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">AuthClient</span><span class="p">,</span> <span class="n">WykopApiClient</span>
 
 <span class="n">auth</span> <span class="o">=</span> <span class="n">AuthClient</span><span class="p">()</span>
 <span class="c1"># USER_JWT_TOKEN to token, a USER_REFRESH_TOKEN to rtoken z urla</span>
@@ -222,7 +222,7 @@ automatycznego odświezania tokenu uzytkownika API. Osoba korzystająca z
 SDK musi to zrobić manualnie. Najbardziej leniwy sposób to robienie tego
 za kazdym razem przy inicjacji obiektu wtedy macie gwarancję, ze
 uzywacie aktualnego tokenu:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">wykop_sdk_reloaded.v3.client</span> <span class="kn">import</span> <span class="n">AuthClient</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">wykop_sdk_reloaded.v3.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">AuthClient</span>
 
 <span class="n">auth</span> <span class="o">=</span> <span class="n">AuthClient</span><span class="p">()</span>
 <span class="n">auth</span><span class="o">.</span><span class="n">authenticate_user</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
