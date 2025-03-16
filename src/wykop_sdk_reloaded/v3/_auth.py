@@ -14,7 +14,6 @@ class AuthClient:
 
     def __generate_jwt_app_token(self) -> str:
         response = ApiRequester(url=_urls.AUTH_URL, token=None).post(data={"key": self.key, "secret": self.secret})
-
         assert response
         
         return response["data"]["token"]
