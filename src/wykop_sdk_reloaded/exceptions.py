@@ -1,4 +1,7 @@
 class WykopApiError(Exception):
+    """
+    Generyczny błąd WykopApiv3
+    """
     pass
 
 
