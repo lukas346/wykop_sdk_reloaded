@@ -42,7 +42,7 @@ class ApiRequester:
         return response.json() if response.text else None
     
 
-    def put(self, data: dict | None = None) -> dict:
+    def put(self, data: dict | None = None) -> dict | None:
         response = requests.put(
             self.url,
             json={"data": data} if data else None,
