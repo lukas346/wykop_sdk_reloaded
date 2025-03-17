@@ -8,9 +8,11 @@ class AuthClient:
     def __init__(self):
         self.key = None
         self.secret = None
+        
         self.jwt_app_token = None
+
         self.jwt_user_token = None
-        self.jwt_refresh_user_token = None
+        self.jwt_user_refresh_token = None
 
     def __generate_jwt_app_token(self) -> str:
         return ApiRequester(url=_urls.AUTH_URL, token=None).post(
@@ -22,7 +24,7 @@ class AuthClient:
             raise AuthError("Wymagane zalogowanie. Wywołaj AuthClient.authenticate_app() albo AuthClient.authenticate_user()")
         
     def check_user_authentication(self):
-        if not self.jwt_user_token or not self.jwt_refresh_user_token:
+        if not self.jwt_user_token or not self.jwt_user_refresh_token:
             raise AuthError("Wymagane zalogowanie uzytkownika. Wywołaj AuthClient.authenticate_user()")
     
     def wykop_connect(self):
@@ -37,19 +39,18 @@ class AuthClient:
 
         self.jwt_app_token = self.__generate_jwt_app_token()
 
-    def authenticate_user(self, token: str, refresh_token: str):
-        self.jwt_user_token = token
-        self.jwt_refresh_user_token = refresh_token
+    def authenticate_user(self, refresh_token: str):
+        self.jwt_user_refresh_token = refresh_token
+        self.refresh_user_token()
 
     def refresh_user_token(self) -> dict:
         self.check_user_authentication()
 
         response = ApiRequester(url=_urls.REFRESH_TOKEN_URL, token=None).post(
-            data={"refresh_token": self.jwt_refresh_user_token}
+            data={"refresh_token": self.jwt_user_refresh_token}
         )["data"]
 
         self.jwt_user_token = response["token"]
-        self.jwt_refresh_user_token = response["refresh_token"]
 
         return response
 
