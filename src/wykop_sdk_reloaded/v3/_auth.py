@@ -8,7 +8,7 @@ class AuthClient:
     def __init__(self):
         self.key = None
         self.secret = None
-        
+
         self.jwt_app_token = None
 
         self.jwt_user_token = None
@@ -24,7 +24,7 @@ class AuthClient:
             raise AuthError("Wymagane zalogowanie. Wywołaj AuthClient.authenticate_app() albo AuthClient.authenticate_user()")
         
     def check_user_authentication(self):
-        if not self.jwt_user_token or not self.jwt_user_refresh_token:
+        if not self.jwt_user_token:
             raise AuthError("Wymagane zalogowanie uzytkownika. Wywołaj AuthClient.authenticate_user()")
     
     def wykop_connect(self):
@@ -44,7 +44,8 @@ class AuthClient:
         self.refresh_user_token()
 
     def refresh_user_token(self) -> dict:
-        self.check_user_authentication()
+        if not self.jwt_user_refresh_token:
+            raise AuthError("Wymagane zalogowanie uzytkownika. Wywołaj AuthClient.authenticate_user()")
 
         response = ApiRequester(url=_urls.REFRESH_TOKEN_URL, token=None).post(
             data={"refresh_token": self.jwt_user_refresh_token}
