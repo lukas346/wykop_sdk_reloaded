@@ -1,6 +1,6 @@
 import requests
 
-from ..exceptions import WykopApiError, WykopApiAuthorizationError, WykopApiNotFoundError, WykopApiLimitExceededError
+from ..exceptions import WykopApiError, WykopApiAuthorizationError, WykopApiNotFoundError, WykopApiLimitExceededError, WykopApiBlockedError
 
 
 def handle_errors(response: requests.Response):
@@ -9,6 +9,8 @@ def handle_errors(response: requests.Response):
             raise WykopApiNotFoundError(response.json()["error"])
         case 400:
             raise WykopApiLimitExceededError(response.json()["error"])
+        case 401:
+            raise WykopApiBlockedError(response.json()["error"])
         case 403:
             raise WykopApiAuthorizationError(response.json()["error"])
         
