@@ -13,9 +13,10 @@ class AuthClient:
         self.jwt_refresh_user_token = None
 
     def __generate_jwt_app_token(self) -> str:
-        return ApiRequester(url=_urls.AUTH_URL, token=None).post(
-            data={"key": self.key, "secret": self.secret}
-        )["data"]["token"]
+        response = ApiRequester(url=_urls.AUTH_URL, token=None).post(data={"key": self.key, "secret": self.secret})
+        assert response
+        
+        return response["data"]["token"]
     
     def check_authentication(self):
         if not self.jwt_app_token and not self.jwt_user_token:
@@ -46,7 +47,9 @@ class AuthClient:
 
         response = ApiRequester(url=_urls.REFRESH_TOKEN_URL, token=None).post(
             data={"refresh_token": self.jwt_refresh_user_token}
-        )["data"]
+        )
+        assert response
+        response = response["data"]
 
         self.jwt_user_token = response["token"]
         self.jwt_refresh_user_token = response["refresh_token"]
