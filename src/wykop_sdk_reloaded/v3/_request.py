@@ -1,6 +1,21 @@
 import requests
 
-from ..exceptions import WykopApiError
+from ..exceptions import WykopApiError, WykopApiAuthorizationError, WykopApiNotFoundError, WykopApiLimitExceededError, WykopApiBlockedError
+
+
+def handle_errors(response: requests.Response):
+    match response.status_code:
+        case 404:
+            raise WykopApiNotFoundError(response.json()["error"])
+        case 400:
+            raise WykopApiLimitExceededError(response.json()["error"])
+        case 401:
+            raise WykopApiBlockedError(response.json()["error"])
+        case 403:
+            raise WykopApiAuthorizationError(response.json()["error"])
+        
+    if response.status_code >= 300:
+        raise WykopApiError(response.json()["error"])
 
 
 class ApiRequester:
@@ -15,8 +30,8 @@ class ApiRequester:
             params = {k: v for k, v in params.items() if v} 
         
         response = requests.get(self.url, params, headers=self.header)
-        if response.status_code >= 300:
-            raise WykopApiError(response.json()["error"])
+
+        handle_errors(response)
         
         return response.json()
     
@@ -36,8 +51,7 @@ class ApiRequester:
             headers=self.header
         )
 
-        if response.status_code >= 300:
-            raise WykopApiError(response.json()["error"])
+        handle_errors(response)
         
         return response.json() if response.text else None
     
@@ -49,13 +63,11 @@ class ApiRequester:
             headers=self.header
         )
 
-        if response.status_code >= 300:
-            raise WykopApiError(response.json()["error"])
+        handle_errors(response)
         
         return response.json() if response.text else None
     
     def delete(self):
         response = requests.delete(self.url, headers=self.header)
 
-        if response.status_code >= 300:
-            raise WykopApiError(response.json()["error"])
+        handle_errors(response)
