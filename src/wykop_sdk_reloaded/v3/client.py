@@ -210,7 +210,7 @@ class _WykopApiClientLinkCommentsMixin(_WykopApiClientBase):
             embed: str | None = None,
             adult: bool | None = None,
 
-        ) -> dict:
+        ) -> dict | None:
         """
         Wymaga zalogowania uzytkownika.
 
@@ -236,7 +236,7 @@ class _WykopApiClientLinkCommentsMixin(_WykopApiClientBase):
             embed: str | None = None,
             adult: bool | None = None,
 
-        ) -> dict:
+        ) -> dict | None:
         """
         Wymaga zalogowania uzytkownika.
 
@@ -262,7 +262,7 @@ class _WykopApiClientLinkCommentsMixin(_WykopApiClientBase):
             embed: str | None = None,
             adult: bool | None = None,
 
-        ) -> dict:
+        ) -> dict | None:
         """
         Wymaga zalogowania uzytkownika.
 
@@ -485,7 +485,7 @@ class _WykopApiClientTagsMixin(_WykopApiClientBase):
         ).get()
     
     @auth_user_required
-    def tags_edit_tag(self, tag: str, photo: str, description: str) -> str:
+    def tags_edit_tag(self, tag: str, photo: str, description: str) -> dict | None:
         """
         Wymaga zalogowania uzytkownika.
 
@@ -594,7 +594,7 @@ class _WykopApiClientEntriesMixin(_WykopApiClientBase):
             embed: str | None = None,
             adult: bool | None = None,
 
-        ) -> dict:
+        ) -> dict | None:
         """
         Wymaga zalogowania uzytkownika.
 
@@ -680,7 +680,7 @@ class _WykopApiClientEntriesMixin(_WykopApiClientBase):
         photo: str | None = None,
         embed: str | None = None,
         adult: bool | None = None,
-    ) -> dict:
+    ) -> dict | None:
         """
         Wymaga zalogowania uzytkownika.
 
@@ -700,7 +700,7 @@ class _WykopApiClientEntriesMixin(_WykopApiClientBase):
     def entries_delete_entry(
         self,
         entry_id: str
-    ) -> dict:
+    ) -> dict | None:
         """
         Wymaga zalogowania uzytkownika.
 
@@ -728,7 +728,7 @@ class _WykopApiClientEntriesMixin(_WykopApiClientBase):
     def entries_vote_up_entry(
         self,
         entry_id: str
-    ) -> dict:
+    ) -> dict | None:
         """
         Wymaga zalogowania uzytkownika.
 
@@ -743,7 +743,7 @@ class _WykopApiClientEntriesMixin(_WykopApiClientBase):
     def entries_vote_revoke_entry(
         self,
         entry_id: str
-    ) -> dict:
+    ) -> dict | None:
         """
         Wymaga zalogowania uzytkownika.
 
@@ -785,7 +785,7 @@ class _WykopApiClientEntryCommentsMixin(_WykopApiClientBase):
             embed: str | None = None,
             adult: bool | None = None,
 
-        ) -> dict:
+        ) -> dict | None:
         """
         Wymaga zalogowania uzytkownika.
 
@@ -811,7 +811,7 @@ class _WykopApiClientEntryCommentsMixin(_WykopApiClientBase):
             embed: str | None = None,
             adult: bool | None = None,
 
-        ) -> dict:
+        ) -> dict | None:
         """
         Wymaga zalogowania uzytkownika.
 
@@ -832,7 +832,7 @@ class _WykopApiClientEntryCommentsMixin(_WykopApiClientBase):
         self,
         entry_id: str,
         comment_id: str
-    ) -> dict:
+    ) -> dict | None:
         """
         Wymaga zalogowania uzytkownika.
 
@@ -848,7 +848,7 @@ class _WykopApiClientEntryCommentsMixin(_WykopApiClientBase):
         self,
         entry_id: str,
         comment_id: str
-    ) -> dict:
+    ) -> dict | None:
         """
         Wymaga zalogowania uzytkownika.
 
@@ -864,7 +864,7 @@ class _WykopApiClientEntryCommentsMixin(_WykopApiClientBase):
         self,
         entry_id: str,
         comment_id: str
-    ) -> dict:
+    ) -> dict | None:
         """
         Wymaga zalogowania uzytkownika.
 
@@ -1042,7 +1042,7 @@ class _WykopApiClientMediaPhotosMixin(_WykopApiClientBase):
     Mixin zawierający akcje na zdjęciach/obrazkach.
     """
     @auth_user_required
-    def photos_upload_url(self, url: str, type: MediaPhotosType) -> dict:
+    def photos_upload_url(self, url: str, type: MediaPhotosType) -> dict | None:
         """
         Wymaga zalogowania uzytkownika.
 
@@ -1057,7 +1057,7 @@ class _WykopApiClientMediaPhotosMixin(_WykopApiClientBase):
         ).post(data={"url": url}, params={"type": type.value})
     
     @auth_user_required
-    def photos_upload_file(self, picf: str, type: MediaPhotosType) -> dict:
+    def photos_upload_file(self, picf: str, type: MediaPhotosType) -> dict | None:
         """
         Wymaga zalogowania uzytkownika.
 
@@ -1073,7 +1073,7 @@ class _WykopApiClientMediaPhotosMixin(_WykopApiClientBase):
 
 
     @auth_user_required
-    def photos_delete_photo(self, key: str) -> dict:
+    def photos_delete_photo(self, key: str) -> dict | None:
         """
         Wymaga zalogowania uzytkownika.
 
@@ -1090,7 +1090,7 @@ class _WykopApiClientMediaEmedMixin(_WykopApiClientBase):
     Mixin zawierający akcje na zewnętrznych linkach.
     """
     @auth_user_required
-    def embed_upload_url(self, url: str) -> dict:
+    def embed_upload_url(self, url: str) -> dict | None:
         """
         Wymaga zalogowania uzytkownika.
 
