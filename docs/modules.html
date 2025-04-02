@@ -20,7 +20,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Indeks" href="genindex.html" />
     <link rel="search" title="Szukaj" href="search.html" />
-    <link rel="prev" title="Wprowadzenie" href="readme.html" /> 
+    <link rel="prev" title="Wykop SDK Reloaded" href="readme.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,7 +44,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Przydatne linki:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="readme.html">Wprowadzenie</a></li>
+<li class="toctree-l1"><a class="reference internal" href="readme.html">Wykop SDK Reloaded</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Dokumentacja API</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#module-wykop_sdk_reloaded.v3.client">Klient WykopApi v3</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#wykop_sdk_reloaded.v3.client.WykopApiClient"><code class="docutils literal notranslate"><span class="pre">WykopApiClient</span></code></a></li>
@@ -173,7 +173,11 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-wykop_sdk_reloaded.exceptions">Bazowe klasy wyjątków</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#wykop_sdk_reloaded.exceptions.AuthError"><code class="docutils literal notranslate"><span class="pre">AuthError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wykop_sdk_reloaded.exceptions.WykopApiAuthorizationError"><code class="docutils literal notranslate"><span class="pre">WykopApiAuthorizationError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wykop_sdk_reloaded.exceptions.WykopApiBlockedError"><code class="docutils literal notranslate"><span class="pre">WykopApiBlockedError</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#wykop_sdk_reloaded.exceptions.WykopApiError"><code class="docutils literal notranslate"><span class="pre">WykopApiError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wykop_sdk_reloaded.exceptions.WykopApiLimitExceededError"><code class="docutils literal notranslate"><span class="pre">WykopApiLimitExceededError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wykop_sdk_reloaded.exceptions.WykopApiNotFoundError"><code class="docutils literal notranslate"><span class="pre">WykopApiNotFoundError</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-wykop_sdk_reloaded.v3.types">Typy</a><ul>
@@ -355,7 +359,7 @@ Paginacja dla użytkowników zalogowanych będzie zwracać hash next dla następ
 </ul>
 </dd>
 <dt class="field-even">Typ zwracany<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict</p>
+<dd class="field-even"><p>dict | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -370,7 +374,7 @@ Paginacja dla użytkowników zalogowanych będzie zwracać hash next dla następ
 <dd class="field-odd"><p><strong>entry_id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Typ zwracany<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict</p>
+<dd class="field-even"><p>dict | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -468,7 +472,7 @@ Paginacja dla użytkowników zalogowanych będzie zwracać hash next dla następ
 </ul>
 </dd>
 <dt class="field-even">Typ zwracany<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict</p>
+<dd class="field-even"><p>dict | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -483,7 +487,7 @@ Paginacja dla użytkowników zalogowanych będzie zwracać hash next dla następ
 <dd class="field-odd"><p><strong>entry_id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Typ zwracany<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict</p>
+<dd class="field-even"><p>dict | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -498,7 +502,7 @@ Paginacja dla użytkowników zalogowanych będzie zwracać hash next dla następ
 <dd class="field-odd"><p><strong>entry_id</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Typ zwracany<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict</p>
+<dd class="field-even"><p>dict | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -531,7 +535,7 @@ Paginacja dla użytkowników zalogowanych będzie zwracać hash next dla następ
 </ul>
 </dd>
 <dt class="field-even">Typ zwracany<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict</p>
+<dd class="field-even"><p>dict | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -549,7 +553,7 @@ Paginacja dla użytkowników zalogowanych będzie zwracać hash next dla następ
 </ul>
 </dd>
 <dt class="field-even">Typ zwracany<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict</p>
+<dd class="field-even"><p>dict | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -589,7 +593,7 @@ Paginacja dla użytkowników zalogowanych będzie zwracać hash next dla następ
 </ul>
 </dd>
 <dt class="field-even">Typ zwracany<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict</p>
+<dd class="field-even"><p>dict | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -607,7 +611,7 @@ Paginacja dla użytkowników zalogowanych będzie zwracać hash next dla następ
 </ul>
 </dd>
 <dt class="field-even">Typ zwracany<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict</p>
+<dd class="field-even"><p>dict | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -625,7 +629,7 @@ Paginacja dla użytkowników zalogowanych będzie zwracać hash next dla następ
 </ul>
 </dd>
 <dt class="field-even">Typ zwracany<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict</p>
+<dd class="field-even"><p>dict | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -658,7 +662,7 @@ Paginacja dla użytkowników zalogowanych będzie zwracać hash next dla następ
 </ul>
 </dd>
 <dt class="field-even">Typ zwracany<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict</p>
+<dd class="field-even"><p>dict | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -680,7 +684,7 @@ Paginacja dla użytkowników zalogowanych będzie zwracać hash next dla następ
 </ul>
 </dd>
 <dt class="field-even">Typ zwracany<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict</p>
+<dd class="field-even"><p>dict | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -736,7 +740,7 @@ Paginacja dla użytkowników zalogowanych będzie zwracać hash next dla następ
 </ul>
 </dd>
 <dt class="field-even">Typ zwracany<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict</p>
+<dd class="field-even"><p>dict | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1015,7 +1019,7 @@ params tags: Tagi. Można wysłać do 6 tagów (bez «#»).</p>
 <dd class="field-odd"><p><strong>url</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Typ zwracany<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict</p>
+<dd class="field-even"><p>dict | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1042,7 +1046,7 @@ params tags: Tagi. Można wysłać do 6 tagów (bez «#»).</p>
 <dd class="field-odd"><p><strong>key</strong> (<em>str</em>)</p>
 </dd>
 <dt class="field-even">Typ zwracany<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict</p>
+<dd class="field-even"><p>dict | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1063,7 +1067,7 @@ Maksymalny rozmiar pliku to 10 MB.</p>
 </ul>
 </dd>
 <dt class="field-even">Typ zwracany<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict</p>
+<dd class="field-even"><p>dict | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1084,7 +1088,7 @@ Maksymalny rozmiar pliku to 10 MB.</p>
 </ul>
 </dd>
 <dt class="field-even">Typ zwracany<span class="colon">:</span></dt>
-<dd class="field-even"><p>dict</p>
+<dd class="field-even"><p>dict | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1656,7 +1660,7 @@ params next_message: identyfikator (key) najnowszej widocznej wiadomości. Po je
 </ul>
 </dd>
 <dt class="field-even">Typ zwracany<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
+<dd class="field-even"><p>dict | None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1761,9 +1765,38 @@ Paginacja dla użytkowników zalogowanych będzie zwracać hash next dla następ
 </dd></dl>
 
 <dl class="py exception">
+<dt class="sig sig-object py" id="wykop_sdk_reloaded.exceptions.WykopApiAuthorizationError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">wykop_sdk_reloaded.exceptions.</span></span><span class="sig-name descname"><span class="pre">WykopApiAuthorizationError</span></span><a class="reference internal" href="_modules/wykop_sdk_reloaded/exceptions.html#WykopApiAuthorizationError"><span class="viewcode-link"><span class="pre">[źródło]</span></span></a><a class="headerlink" href="#wykop_sdk_reloaded.exceptions.WykopApiAuthorizationError" title="Link to this definition"></a></dt>
+<dd><p>Klasy bazowe: <a class="reference internal" href="#wykop_sdk_reloaded.exceptions.WykopApiError" title="wykop_sdk_reloaded.exceptions.WykopApiError"><code class="xref py py-class docutils literal notranslate"><span class="pre">WykopApiError</span></code></a></p>
+<p>HTTP 403 Brak autoryzacji - token niepoprawny albo wygasł i należy go odświeżyć</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="wykop_sdk_reloaded.exceptions.WykopApiBlockedError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">wykop_sdk_reloaded.exceptions.</span></span><span class="sig-name descname"><span class="pre">WykopApiBlockedError</span></span><a class="reference internal" href="_modules/wykop_sdk_reloaded/exceptions.html#WykopApiBlockedError"><span class="viewcode-link"><span class="pre">[źródło]</span></span></a><a class="headerlink" href="#wykop_sdk_reloaded.exceptions.WykopApiBlockedError" title="Link to this definition"></a></dt>
+<dd><p>Klasy bazowe: <a class="reference internal" href="#wykop_sdk_reloaded.exceptions.WykopApiError" title="wykop_sdk_reloaded.exceptions.WykopApiError"><code class="xref py py-class docutils literal notranslate"><span class="pre">WykopApiError</span></code></a></p>
+<p>HTTP 401 Endpoint został zablokowany</p>
+</dd></dl>
+
+<dl class="py exception">
 <dt class="sig sig-object py" id="wykop_sdk_reloaded.exceptions.WykopApiError">
 <em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">wykop_sdk_reloaded.exceptions.</span></span><span class="sig-name descname"><span class="pre">WykopApiError</span></span><a class="reference internal" href="_modules/wykop_sdk_reloaded/exceptions.html#WykopApiError"><span class="viewcode-link"><span class="pre">[źródło]</span></span></a><a class="headerlink" href="#wykop_sdk_reloaded.exceptions.WykopApiError" title="Link to this definition"></a></dt>
 <dd><p>Klasy bazowe: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Generyczny błąd WykopApiv3</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="wykop_sdk_reloaded.exceptions.WykopApiLimitExceededError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">wykop_sdk_reloaded.exceptions.</span></span><span class="sig-name descname"><span class="pre">WykopApiLimitExceededError</span></span><a class="reference internal" href="_modules/wykop_sdk_reloaded/exceptions.html#WykopApiLimitExceededError"><span class="viewcode-link"><span class="pre">[źródło]</span></span></a><a class="headerlink" href="#wykop_sdk_reloaded.exceptions.WykopApiLimitExceededError" title="Link to this definition"></a></dt>
+<dd><p>Klasy bazowe: <a class="reference internal" href="#wykop_sdk_reloaded.exceptions.WykopApiError" title="wykop_sdk_reloaded.exceptions.WykopApiError"><code class="xref py py-class docutils literal notranslate"><span class="pre">WykopApiError</span></code></a></p>
+<p>HTTP 400 Limit zapytań został przekroczony</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="wykop_sdk_reloaded.exceptions.WykopApiNotFoundError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">wykop_sdk_reloaded.exceptions.</span></span><span class="sig-name descname"><span class="pre">WykopApiNotFoundError</span></span><a class="reference internal" href="_modules/wykop_sdk_reloaded/exceptions.html#WykopApiNotFoundError"><span class="viewcode-link"><span class="pre">[źródło]</span></span></a><a class="headerlink" href="#wykop_sdk_reloaded.exceptions.WykopApiNotFoundError" title="Link to this definition"></a></dt>
+<dd><p>Klasy bazowe: <a class="reference internal" href="#wykop_sdk_reloaded.exceptions.WykopApiError" title="wykop_sdk_reloaded.exceptions.WykopApiError"><code class="xref py py-class docutils literal notranslate"><span class="pre">WykopApiError</span></code></a></p>
+<p>HTTP 404 Brak Endpointu</p>
 </dd></dl>
 
 </section>
@@ -1989,7 +2022,7 @@ Paginacja dla użytkowników zalogowanych będzie zwracać hash next dla następ
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="readme.html" class="btn btn-neutral float-left" title="Wprowadzenie" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Poprzedni</a>
+        <a href="readme.html" class="btn btn-neutral float-left" title="Wykop SDK Reloaded" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Poprzedni</a>
     </div>
 
   <hr/>

@@ -42,7 +42,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Przydatne linki:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../readme.html">Wprowadzenie</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">Wykop SDK Reloaded</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules.html">Dokumentacja API</a></li>
 </ul>
 
@@ -74,6 +74,49 @@
 <div class="viewcode-block" id="WykopApiError">
 <a class="viewcode-back" href="../../modules.html#wykop_sdk_reloaded.exceptions.WykopApiError">[dokumentacja]</a>
 <span></span><span class="k">class</span><span class="w"> </span><span class="nc">WykopApiError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generyczny błąd WykopApiv3</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+
+
+<div class="viewcode-block" id="WykopApiLimitExceededError">
+<a class="viewcode-back" href="../../modules.html#wykop_sdk_reloaded.exceptions.WykopApiLimitExceededError">[dokumentacja]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">WykopApiLimitExceededError</span><span class="p">(</span><span class="n">WykopApiError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    HTTP 400 Limit zapytań został przekroczony</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+
+
+<div class="viewcode-block" id="WykopApiBlockedError">
+<a class="viewcode-back" href="../../modules.html#wykop_sdk_reloaded.exceptions.WykopApiBlockedError">[dokumentacja]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">WykopApiBlockedError</span><span class="p">(</span><span class="n">WykopApiError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    HTTP 401 Endpoint został zablokowany</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+
+
+<div class="viewcode-block" id="WykopApiAuthorizationError">
+<a class="viewcode-back" href="../../modules.html#wykop_sdk_reloaded.exceptions.WykopApiAuthorizationError">[dokumentacja]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">WykopApiAuthorizationError</span><span class="p">(</span><span class="n">WykopApiError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    HTTP 403 Brak autoryzacji - token niepoprawny albo wygasł i należy go odświeżyć</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+
+
+<div class="viewcode-block" id="WykopApiNotFoundError">
+<a class="viewcode-back" href="../../modules.html#wykop_sdk_reloaded.exceptions.WykopApiNotFoundError">[dokumentacja]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">WykopApiNotFoundError</span><span class="p">(</span><span class="n">WykopApiError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    HTTP 404 Brak Endpointu</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">pass</span></div>
 
 
