@@ -32,7 +32,8 @@ pip install wykop_sdk_reloaded
 from wykop_sdk_reloaded.v3.client import AuthClient, WykopApiClient
 
 auth = AuthClient()
-auth.authenticate_user("<USER_JWT_TOKEN>", "<USER_REFRESH_TOKEN>")
+auth.authenticate_user("<USER_REFRESH_TOKEN>")
+# jeśli token wygaśnie możesz go odświeżyć, odświeżanie wykorzysuje refresh token
 auth.refresh_user_token()
 
 api = WykopApiClient(auth)
@@ -60,6 +61,9 @@ api.entries_list_entries()
 ```
 
 W razie wątpliwości przeczytaj README do końca i rzuć okiem na [testy](https://github.com/lukas346/wykop_sdk_reloaded/blob/main/tests/test_client.py).
+
+## Żywotność tokenu
+JWT Token wygenerowany przez metodę `AuthClient().authenticate_user()` ma krótką żywotność, jeśli wywołanie operacji będzie zwracało błąd `WykopApiAuthorizationError` to należy odświeżyć token za pomocą `AuthClient().refresh_user_token()`.
 
 ## Autoryzacja przez Wykop API
 
@@ -112,14 +116,14 @@ Po kliknięciu zostajecie przekierowani na stronę zdefiniowaną przy tworzeniu 
 
 U mnie będzie to: `http://api/?token=eyJ041424iJ3QiLCJhbGciOiJIUzI1NiJ9.bG9yZW0gaXBzdW1sb3JlbSBpcHN1bWxvcmVtIGlwc3VtbG9yZW0gaXBzdW1sb3JlbSBpcHN1bWxvcmVtIGlwc3VtbG9yZW0gaXBzdW0=&rtoken=3e39e42414248c4c79ee221ef8f10af55252db20139eb5c2617a188115f7c2758`
 
-Wyciągacie z URLa token i rtoken, zapisujecie gdzieś sobie na przykład w pliku `.env` waszej aplikacji i teraz w końcu mozecie korzystac z pelni mozliwosci wykopowego api.
+Wyciągacie z URLa rtoken, zapisujecie gdzieś sobie na przykład w pliku `.env` waszej aplikacji i teraz w końcu mozecie korzystac z pelni mozliwosci wykopowego api.
 
 ```python
 from wykop_sdk_reloaded.v3.client import AuthClient, WykopApiClient
 
 auth = AuthClient()
-# USER_JWT_TOKEN to token, a USER_REFRESH_TOKEN to rtoken z urla
-auth.authenticate_user("<USER_JWT_TOKEN>", "<USER_REFRESH_TOKEN>")
+# USER_REFRESH_TOKEN to rtoken z urla
+auth.authenticate_user("<USER_REFRESH_TOKEN>")
 
 api = WykopApiClient(auth)
 
@@ -130,18 +134,6 @@ api.entries_create_entry("michal bialek sami wiecie co #wykop")
 Michal Białek jak zwykle przekombinował ale co mozna poradzic.
 
 ## Decyzje projektowe
-### As explicit as possible
-Unikam automagicznych funkcjonalności dlatego na przykład nie ma automatycznego odświezania tokenu uzytkownika API. Osoba korzystająca z SDK musi to zrobić manualnie. Najbardziej leniwy sposób to robienie tego za kazdym razem przy inicjacji obiektu wtedy macie gwarancję, ze uzywacie aktualnego tokenu:
-```python
-from wykop_sdk_reloaded.v3.client import AuthClient
-
-auth = AuthClient()
-auth.authenticate_user("<USER_JWT_TOKEN>", "<USER_REFRESH_TOKEN>")
-auth.refresh_user_token()
-```
-
-Tokeny mają ustawiony krotki okres waznosci więc podejrzewam, ze to jest najbardziej praktyczna opcja.
-
 ### SDK blisko Wykop API
 Postanowiłem zwracać praktycznie surowe dane z api wykopu zamiast zdeserializowanych list obiektów. Ma to jedną duzą zaletę - znaczie ułatwiania utrzymywanie biblioteki przy jednoczesnej duzej elastyczności w przetwarzaniu odpowiedzi przez uzytkowników SDK. Jeśli struktura odpowiedzi się zmieni to znaczy, ze wykop zmienił swoje API i wystarczy, ze dokonacie zmian w kodzie zamiast czekania na nową wersję SDK.
 
