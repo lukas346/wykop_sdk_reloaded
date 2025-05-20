@@ -26,6 +26,10 @@ api.raw_request("https://wykop.pl/api/v3/tags/popular", RequestType.GET, data=No
 pip install wykop_sdk_reloaded
 ```
 
+## Poradniki
+ * [Jak zrobić własne usuńKonto z Wykopu
+](https://www.whileforloop.pl/posts/wykop-usunkonto/)
+
 ## Przykładowe uzycie
 
 ```python
