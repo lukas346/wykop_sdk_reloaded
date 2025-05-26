@@ -29,6 +29,7 @@ pip install wykop_sdk_reloaded
 ## Poradniki
  * [Jak zrobić własne usuńKonto z Wykopu
 ](https://www.whileforloop.pl/posts/wykop-usunkonto/)
+* [Wykopowy plusBot](https://whileforloop.pl/posts/wykop-plusboot/)
 
 ## Przykładowe uzycie
 
